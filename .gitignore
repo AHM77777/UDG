@@ -1,1 +1,6 @@
-~$
+# Word temporary
+~$*.doc*
+
+# Compiler made files
+*.out
+*.exe
