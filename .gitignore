@@ -1,1 +1,7 @@
-~$
+#Ignores Word temporary.
+~$*.doc*
+
+#Ignores compiler files.
+*.out
+*.exe
+

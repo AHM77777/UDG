@@ -1,25 +1,26 @@
+#ifndef __SERVICIOMEGAMEX_H_INCLUDED__
+#define __SERVICIOMEGAMEX_H_INCLUDED__
+
 #include "utileriasAHM.h"
 
 using namespace std;
 
 /**
- * Declaracion de variables globales y clase principal.
+ * Declaracion de la clase principal.
  */
-int fin = 1, eleccion;
-
 class servicios
 {
   public :
     // Variables publicas de la clase servicio.
-    string tituloDeServicio, descripcionDeServicio;
-    int tipoDeServicio, codigoDeServicio;
-    float costoDeServicio, comisionDeEmpleado;
+    string tituloServicio, descripcionServicio;
+    int tipoServicio, codigoServicio;
+    float costoServicio, comisionEmpleado;
     
     // Metodos publicos de la clase servicio.
     void capturar();
     void mostrar();
     void buscar();
-    void menu();
+    int menu();
 } sv;
 
 /**
@@ -33,22 +34,22 @@ void servicios::capturar()
   cin.ignore(1, '\n');
 
   cout << "Ingresa el titulo de su servicio (Inserta 'help' para ejemplos de posibles titulos): ";
-  getline(cin, sv.tituloDeServicio);
+  getline(cin, sv.tituloServicio);
 
     // Implementacion de ejemplos para nombramiento de titulo.
-    if (sv.tituloDeServicio == "help") {
+    if (sv.tituloServicio == "help") {
       int i = 0;
       
-      while (sv.tituloDeServicio == "help") {
+      while (sv.tituloServicio == "help") {
          switch (i) {
            case 0:
-           cout << "  p. ej. Paquete Televisivo Basico 1" << endl;
+           cout << "  p. ej. Paquete Televisivo Basico 1." << endl;
            break;
          case 1:
-           cout << "  p. ej. Paquete Economico" << endl;
+           cout << "  p. ej. Paquete Economico." << endl;
            break;
          case 2:
-           cout << "p. ej. Megapaquete Cable/Internet/Telefono" << endl;
+           cout << "p. ej. Megapaquete Cable/Internet/Telefono." << endl;
            i = -1;
            break;
         }
@@ -56,7 +57,7 @@ void servicios::capturar()
         i++;
         
         cout << endl << "Titulo de servicio: ";
-        getline(cin, sv.tituloDeServicio);
+        getline(cin, sv.tituloServicio);
      }
    }
 
@@ -65,27 +66,31 @@ void servicios::capturar()
   cout << "  2.- Television Digital." << endl;
   cout << "  3.- Television Satelital." << endl;
   cout << "  4.- Internet" << endl;
-  cout << "  5.- Mixto (Especificar en descripcion del servicio)"  << endl;
+  cout << "  5.- Mixto (Especificar en descripcion del servicio)."  << endl;
   cout << endl <<  "  Tipo de Servicio: ";
-  cin >> sv.tipoDeServicio;
+  cin >> sv.tipoServicio;
+  checkInputRange(sv.tipoServicio, 1, 5);
 
-  cout << endl << "  Ingrese el codigo de tu servicio: ";
+  cout << endl << "Ingrese el codigo de tu servicio (Asegurate de que el codigo"
+  << " tenga un maximo de 5 digitos): ";
   // @TODO: Revisar si codigo de servicio ingresado ya existe.
-  cin >> sv.codigoDeServicio;
+  cin >> sv.codigoServicio;
+  checkInputLength(sv.codigoServicio, 5);
 
-  cout << endl << "  Ingrese el costo del servicio:" << endl;
-  cout << "    $ ";
-  cin >> sv.costoDeServicio;
+  // @TODO: Revisar que cantidad ingresada sea valida.
+  cout << endl << "Ingrese el costo del servicio:" << endl;
+  cout << "  $ ";
+  cin >> sv.costoServicio;
 
-  cout << endl << "  Ingrese la comision del empleado por el servicio" << endl;
-  cout << "    $ ";
-  cin >> sv.comisionDeEmpleado;
+  cout << endl << "Ingrese la comision del empleado por el servicio:" << endl;
+  cout << "  $ ";
+  cin >> sv.comisionEmpleado;
 
   // Limpiamos buffer para poder registrar la descripcion del servicio.
   cin.ignore(1, '\n');
 
-  cout << endl << "  Ingrese una breve descripcion del servicio: ";
-  getline(cin, sv.descripcionDeServicio);
+  cout << endl << "Ingrese una breve descripcion del servicio: ";
+  getline(cin, sv.descripcionServicio);
 
   cout << endl;
 }
@@ -97,75 +102,86 @@ void servicios::mostrar()
 {
   cout << "--DATOS DEL SERVICIO--" << endl;
 
-  cout << "  Titulo: " << sv.tituloDeServicio << endl;
+  cout << "Titulo: " << sv.tituloServicio << endl;
 
-  cout << "  Tipo: ";
-  switch(sv.tipoDeServicio) {
+  cout << "Tipo: ";
+  switch (sv.tipoServicio) {
     case 1:
-      cout << "Telefonia Digital";
+      cout << "Telefonia Digital.";
       break;
     case 2:
-      cout << "Television Digital";
+      cout << "Television Digital.";
       break;
     case 3:
-      cout << "Television Satelital";
+      cout << "Television Satelital.";
       break;
     case 4:
-      cout << "Internet";
+      cout << "Internet.";
       break;
     case 5:
-      cout << "Mixto";
+      cout << "Mixto.";
       break;
   }
   cout << endl;
 
-  cout << "  Codigo: " << sv.codigoDeServicio << endl;
-  cout << "  Costo: $" << sv.costoDeServicio << endl;
-  cout << "  Comision de empleado: $" << sv.comisionDeEmpleado << endl;
-  cout << "  Descripcion: " << sv.descripcionDeServicio << endl;
+  cout << "Codigo: " << sv.codigoServicio << endl;
+  cout << "Costo: $" << sv.costoServicio << endl;
+  cout << "Comision de empleado: $" << sv.comisionEmpleado << endl;
+  cout << "Descripcion: " << sv.descripcionServicio << endl;
 }
 
-void servicios::buscar() {
+void servicios::buscar()
+{
   int codigo;
      
   while (fin == 1) {
-    cout << "Inserte el codigo del servicio que desea ver: ";
+    cout << "Inserte el codigo del servicio que desea ver (Asegurese que como"
+    << " maximo contega 5 digitos): ";
     cin >> codigo;
+    checkInputLength(codigo, 5);
+    cout << endl;
     
-    if (sv.codigoDeServicio == codigo) {
-      cout << endl << "Titulo de servicio: ";
-      cout << sv.tituloDeServicio;
+    if (sv.codigoServicio == codigo) {
+      cout << "Titulo de servicio: ";
+      cout << sv.tituloServicio << endl;
       
       cout << "Costo de servicio: ";
-      cout << sv.costoDeServicio << endl ;
+      cout << sv.costoServicio << endl ;
       
-      cout << "Comision de empleado: ";
-      cout << sv.comisionDeEmpleado << endl ;
+      cout << "Comision a empleado: ";
+      cout << sv.comisionEmpleado << endl ;
     }
     else {
-      cout << "Servicio solicitado inexistente" << endl;
+      cout << "Servicio solicitado inexistente." << endl << endl;
     }
     
     cout << "Quieres revisar otro producto?" << endl;
-    cout << "  1.- Si" << endl << "  2.- No" << endl;
+    cout << "  1.- Si." << endl;
+    cout << "  2.- No." << endl;
     cout << "Eleccion: ";
     cin >> fin;
-    checkInput(fin, 1, 2);
+    checkInputRange(fin, 1, 2);
+    cout << endl;
   }
 }
 
-void servicios::menu() {
+int servicios::menu()
+{
+  do {
     cout << "Que deseas hacer?" << endl;
     cout << "  1.- Capturar servicio." << endl;
     cout << "  2.- Ver servicios." << endl;
     cout << "  3.- Buscar servicio." << endl;
-    cout << "  4.- Salir." << endl;
+    cout << "  4.- Regresar a menu principal." << endl;
   
     cout << "Eleccion: ";
-    cin >> eleccion;
-    checkInput(eleccion, 1, 4);
     
-    switch(eleccion) {
+    cin >> eleccion;
+    checkInputRange(eleccion, 1, 4);
+    
+    cout <<endl;
+    
+    switch (eleccion) {
       case 1:
         sv.capturar();
         cout << endl;
@@ -179,15 +195,18 @@ void servicios::menu() {
         cout << endl;
         break;
       case 4:
-        pause();
         return 0;
     }
     
     cout << "Deseas hacer algo mas?" << endl;
-    cout << "  1.- Si." << endl << "  2.- No." << endl;
+    cout << "  1.- Si." << endl;
+    cout << "  2.- No." << endl;
     cout << "Eleccion: ";
-    cin >> fin;
-    checkInput(fin, 1, 2);
     
+    cin >> fin;
+    checkInputRange(fin, 1, 2);
+    
+    cout << endl;
   } while (fin == 1);
 }
+#endif
