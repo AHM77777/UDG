@@ -1,24 +1,25 @@
+#ifndef __SUCURSALESMEGAMEX_H_INCLUDED__
+#define __SUCURSALESMEGAMEX_H_INCLUDED__
+
 #include "utileriasAHM.h"
 
 using namespace std;
 
 /**
- * Declaracion de variables globales y clase principal.
+ * Declaracion de la clase principal.
  */
-int fin = 1, eleccion;
-
 class sucursales
 {
   public :
     // Variables publicas de la clase sucursal.
-    string nombreDeSucursal, direccionDeSucursal[4];
-    int codigoDeSucursal, telefonosDeSucursal[3];
+    string nombreSucursal, direccionSucursal[4];
+    int codigoSucursal, telefonosSucursal[3];
     
     // Metodos publicos de la clase sucursal.
     void capturar();
     void mostrar();
     void buscar();
-    void menu();
+    int menu();
 } sc;
 
 /**
@@ -31,16 +32,17 @@ void sucursales::capturar()
   // Limpiamos buffer de cualquier caracter indeseado.
   cin.ignore(1, '\n');
 
+  // @TODO: Function to make sure that no invalid characters get introduced in the name.
   cout << "Ingrese el nombre de la sucursal: ";
-  getline(cin, sc.nombreDeSucursal);
+  getline(cin, sc.nombreSucursal);
 
-  cout << "A continuacion se le pedira informacion referente a la direccion de"
+  cout << endl << "A continuacion se le pedira informacion referente a la direccion de"
   << " la sucursal" << endl;
   
   for (int i = 0; i < 4; ++i) {
     switch(i) {
       case 0:
-        cout << "  Direccion (calle, numero, colonia): ";
+        cout << "  Direccion (Calle, Numero, Colonia): ";
         break;
       case 1:
         cout << "  Ciudad: ";
@@ -53,134 +55,148 @@ void sucursales::capturar()
         break;
     }
     
-    cin.ignore(1, '\n');
-    getline(cin, sc.direccionDeSucursal[i]);
-    cout << endl;
+    // Limpiamos buffer para ingresar el string que introducira el usuario.
+    cin.sync();
+    getline(cin, sc.direccionSucursal[i]);
   }
   
-  cout << "Introduzca el codigo identificador de la sucursal: ";
-  cin >> sc.codigoDeSucursal;
+  cout << endl << "Introduzca el codigo identificador de la sucursal (asegurese que se "
+  << "contenga solo 5 digitos porfavor): ";
+  cin >> sc.codigoSucursal;
+  checkInputLength(sc.codigoSucursal, 5);
   cout << endl;
   
   cout << "A continuacion se le pedira que introduzca los tres numeros de"
-  << " telefono con los que su sucursal cuenta" << endl;
+  << " telefono con los que su sucursal cuenta:" << endl;
   
-  // @TODO: Have the numbers separated by a hyphen for user to see formatted number.
+  // @TODO: Function to check if inserted number is valid.
   for (int i = 0; i < 3; ++i) {
-    cout << "Telefono " << (i + 1) << ": ";
-    cin >> sc.telefonosDeSucursal[i];
+    cout << "  Telefono " << (i + 1) << ": ";
+    cin >> sc.telefonosSucursal[i];
   }
   
   cout << endl;
 }
 
 /**
- * Imprimimos los datos del servicio solicitado.
+ * Imprimimos los datos de la sucursal.
  */
-void servicios::mostrar() 
+void sucursales::mostrar() 
 {
-  cout << "--DATOS DEL SERVICIO--" << endl;
+  cout << "--DATOS DE LA SUCURSAL--" << endl;
 
-  cout << "  Titulo: " << sv.tituloDeServicio << endl;
-
-  cout << "  Tipo: ";
-  switch(sv.tipoDeServicio) {
-    case 1:
-      cout << "Telefonia Digital";
-      break;
-    case 2:
-      cout << "Television Digital";
-      break;
-    case 3:
-      cout << "Television Satelital";
-      break;
-    case 4:
-      cout << "Internet";
-      break;
-    case 5:
-      cout << "Mixto";
-      break;
+  cout << "Nombre: " << sc.nombreSucursal << endl;
+  
+  cout << "Direccion: ";
+  
+  for (int i = 0; i < 4; ++i) {
+    if (i == 3) {
+      cout << sc.direccionSucursal[i] << endl;
+    }
+    else {
+      cout << sc.direccionSucursal[i] << ", ";
+    }
+  }
+  
+  cout << "Codigo: " << sc.codigoSucursal << endl;
+  
+  cout << "Telefonos:" << endl;
+   
+  for (int i = 0; i < 3; ++i) {
+    // @TODO: Format output of phone numbers to be formatted for the user.
+    cout << "  " << (i + 1) << ".- " << sc.telefonosSucursal[i] << endl;
   }
   cout << endl;
-
-  cout << "  Codigo: " << sv.codigoDeServicio << endl;
-  cout << "  Costo: $" << sv.costoDeServicio << endl;
-  cout << "  Comision de empleado: $" << sv.comisionDeEmpleado << endl;
-  cout << "  Descripcion: " << sv.descripcionDeServicio << endl;
 }
 
-void servicios::buscar()
+/**
+ * Imprimimos informacion de la sucursal solicitada.
+ */
+void sucursales::buscar()
 {
   int codigo;
      
   while (fin == 1) {
-    cout << "Inserte el codigo del servicio que desea ver: ";
+    cout << "Inserte el codigo de la sucursal que busca (Asegurese de introducir"
+    << " un maximo de 5 digitos): ";
     cin >> codigo;
+    checkInputLength(codigo, 5);
     
-    if (sv.codigoDeServicio == codigo) {
-      cout << endl << "Titulo de servicio: ";
-      cout << sv.tituloDeServicio;
+    if (sc.codigoSucursal == codigo) {
+      cout << endl << "Nombre de sucursal: ";
+      cout << sc.nombreSucursal;
       
-      cout << "Costo de servicio: ";
-      cout << sv.costoDeServicio << endl ;
+      cout << endl << "Ubicacion: ";
       
-      cout << "Comision de empleado: ";
-      cout << sv.comisionDeEmpleado << endl ;
+      for (int i = 0; i < 4; ++i) {
+        if (i == 3) {
+          cout << sc.direccionSucursal[i] << endl;
+        }
+        else {
+          cout << " " << sc.direccionSucursal[i] << ", ";
+        }
+      }
+      
+      cout << "Telefonos: " << endl;
+      for (int i = 0; i < 3; ++i) {
+        cout << "  " << (i + 1) << ".- " << sc.telefonosSucursal[i] << endl;
+      }
+      cout << endl;
     }
     else {
-      cout << "Servicio solicitado inexistente" << endl;
+      cout << "Sucursal inexistente" << endl << endl;
     }
     
-    cout << "Quieres revisar otro producto?" << endl;
-    cout << "  1.- Si" << endl << "  2.- No" << endl;
+    cout << "Quiere buscar otra sucursal?" << endl;
+    cout << "  1.- Si" << endl;
+    cout << "  2.- No" << endl;
     cout << "Eleccion: ";
     cin >> fin;
-    checkInput(fin, 1, 2);
+    checkInputRange(fin, 1, 2);
+    cout << endl;
   }
 }
 
-void servicios::menu()
+int sucursales::menu()
 {
+  do {
     cout << "Que deseas hacer?" << endl;
-    cout << "  1.- Capturar servicio." << endl;
-    cout << "  2.- Ver servicios." << endl;
-    cout << "  3.- Buscar servicio." << endl;
-    cout << "  4.- Salir." << endl;
+    cout << "  1.- Capturar sucursal." << endl;
+    cout << "  2.- Ver sucursales." << endl;
+    cout << "  3.- Buscar sucursales." << endl;
+    cout << "  4.- Regresar a menu principal." << endl;
   
     cout << "Eleccion: ";
     cin >> eleccion;
-    checkInput(eleccion, 1, 4);
+    checkInputRange(eleccion, 1, 4);
+    cout << endl;
     
-    switch(eleccion) {
+    switch (eleccion) {
       case 1:
-        sv.capturar();
+        sc.capturar();
         cout << endl;
         break;
       case 2:
-        sv.mostrar();
+        sc.mostrar();
         cout << endl;
         break;
       case 3:
-        sv.buscar();
+        sc.buscar();
         cout << endl;
         break;
       case 4:
-        pause();
         return 0;
     }
     
     cout << "Deseas hacer algo mas?" << endl;
-    cout << "  1.- Si." << endl << "  2.- No." << endl;
+    cout << "  1.- Si." << endl;
+    cout << "  2.- No." << endl;
     cout << "Eleccion: ";
-    cin >> fin;
-    checkInput(fin, 1, 2);
     
+    cin >> fin;
+    checkInputRange(fin, 1, 2);
+    
+    cout << endl;
   } while (fin == 1);
 }
-int main()
-{
-  sc.capturar();
-  
-  pause();
-  return 0;
-}
+#endif
