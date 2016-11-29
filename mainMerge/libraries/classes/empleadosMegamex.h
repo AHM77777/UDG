@@ -28,7 +28,11 @@ class empleados
       if (sucursalEmpleado == sc.codigoSucursal) {
         nombreS = sc.nombreSucursal;
       }
-
+      
+      if (sc.codigoSucursal == NULL) {
+        nombreS = "Ninguna (fuera de servicio).";
+      }
+      
       return nombreS;
     };
 } ep;
