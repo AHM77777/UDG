@@ -17,7 +17,7 @@ int main()
   
     cout << "Eleccion: ";
     cin >> eleccion;
-    checkInputRange(eleccion, 1, 4);
+    checkInputRange(eleccion, 1, 6);
     cout << endl;
     
     switch (eleccion) {
@@ -44,10 +44,11 @@ int main()
           break;
         }
         else {
+          pause();
           return 0;
         }
       default:
-        cout << "Bajo construccion." << endl;
+        cout << "Bajo construccion." << endl << endl;
         break;
     }
   } while (eleccion);
