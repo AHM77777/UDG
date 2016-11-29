@@ -1,7 +1,7 @@
 #ifndef __SERVICIOMEGAMEX_H_INCLUDED__
 #define __SERVICIOMEGAMEX_H_INCLUDED__
 
-#include "utileriasAHM.h"
+#include "../utilities/utileriasAHM.h"
 
 using namespace std;
 
