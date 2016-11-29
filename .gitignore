@@ -2,6 +2,7 @@
 ~$*.doc*
 
 #Ignores compiler files.
+*.o
 *.out
 *.exe
 
