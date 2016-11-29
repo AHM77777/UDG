@@ -2,7 +2,6 @@
 #include "./libraries/classes/servicioMegamex.h"
 #include "./libraries/classes/sucursalesMegamex.h"
 #include "./libraries/classes/empleadosMegamex.h"
-#include "./libraries/classes/clientesMegamex.h"
 
 using namespace std;
 
@@ -33,10 +32,6 @@ int main()
         break;
       case 3:
         ep.menu();
-        cout << endl;
-        break;
-      case 4:
-        cl.menu();
         cout << endl;
         break;
       case 6:
