@@ -29,7 +29,7 @@ class empleados
         nombreS = sc.nombreSucursal;
       }
 
-      if (sc.codigoSucursal == 0) {
+      if (sc.codigoSucursal == NULL) {
         nombreS = "Ninguna (fuera de servicio).";
       }
 
@@ -91,7 +91,7 @@ void empleados::capturar()
     cin >> ep.sucursalEmpleado;
     checkInputLength(ep.sucursalEmpleado, 5);
 
-    cout << endl << endl;
+    cout << endl;
   }
 
   cout << "Introduzca el codigo del empleado (Maximo de 5 digitos): ";
@@ -110,7 +110,6 @@ void empleados::capturar()
   cout << "Eleccion: ";
   cin >> ep.puestoEmpleado;
   checkInputRange(ep.puestoEmpleado, 1, 6);
-  cout << endl;
 }
 
 /**
@@ -153,7 +152,7 @@ void empleados::mostrar()
       cout << "Customer-Care";
       break;
   }
-  cout << endl << endl;
+  cout << endl;
 }
 
 /**
@@ -199,7 +198,7 @@ void empleados::buscar()
       cout << endl;
     }
     else {
-      cout << "Empleado inexistente." << endl << endl;
+      cout << "Empleado inexistente." << endl;
     }
 
     cout << "Quiere buscar otro empleado?" << endl;
