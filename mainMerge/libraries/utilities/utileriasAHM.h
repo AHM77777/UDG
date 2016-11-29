@@ -4,7 +4,6 @@
  */
 #ifndef __UTILERIASAHM_H_INCLUDED__
 #define __UTILERIASAHM_H_INCLUDED__
-#define MAXIMO 99999
 
 #include <iostream>
 #include <string>
