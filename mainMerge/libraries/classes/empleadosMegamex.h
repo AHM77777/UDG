@@ -22,12 +22,13 @@ class empleados
     void modificar();
     int menu();
     
-    sucursalLaboral()
+    string sucursalLaboral()
     {
       string nombreS;
-      if (codigoEmpleado == sv.codigoSucursal) {
-        nombreS = sv.nombreSucursal;
+      if (sucursalEmpleado == sc.codigoSucursal) {
+        nombreS = sc.nombreSucursal;
       }
+
       return nombreS;
     };
 } ep;
@@ -37,6 +38,8 @@ class empleados
  */
 void empleados::capturar()
 {
+  int sucursalAnt, contador = 0;
+  
   cout << "--INGRESE LOS DATOS DEL EMPLEADO--" << endl << endl;
 
   // Limpiamos buffer de cualquier caracter indeseado.
@@ -49,7 +52,7 @@ void empleados::capturar()
     switch (i) {
       case 0:
         cout << "  Nombre(s): ";
-        break
+        break;
       case 1:
         cout << "  Apellido Paterno: ";
         break;
@@ -59,24 +62,38 @@ void empleados::capturar()
     }
     
     cin.sync(); // Limpiamos buffer de caracteres indeseados paea registrar nombres.
-    getline(cin, em.nombreEmpleado[i]);
+    getline(cin, ep.nombreEmpleado[i]);
   }
   
   cout << "Ingrese el codigo de la sucursal donde labora el empleado (Maximo de 5 digitos): ";
-  cin >> em.empleadoSucursal;
-  checkInputLength(em.sucursalEmpleado, 5);
+  cin >> ep.sucursalEmpleado;
+  checkInputLength(ep.sucursalEmpleado, 5);
+  sucursalAnt = ep.sucursalEmpleado;
   cout << endl;
   
-  while (em.sucursalEmpleado != sc.codigoSucursal) {
-    cout << "Sucursal inexistente, ingrese el codigo de nuevo: ";
-    cin >> em.empleadoSucursal;
-    checkInputLength(em.sucursalEmpleado, 5);
+  while (ep.sucursalEmpleado != sc.codigoSucursal) {
+    ++contador;
+    
+    if (sucursalAnt == ep.sucursalEmpleado && contador > 1) {
+      break;
+    }
+    
+    if (sucursalAnt != ep.sucursalEmpleado) {
+      sucursalAnt = ep.sucursalEmpleado;
+    }
+    
+    cout << "Sucursal inexistente, vuelva a ingresar el codigo para registrarlo. Ingrese cualquier otro codigo de no ser ese el caso." << endl;
+    cout << "Codigo: ";
+    cin >> ep.sucursalEmpleado;
+    checkInputLength(ep.sucursalEmpleado, 5);
+  
     cout << endl;
   }
   
   cout << "Introduzca el codigo del empleado (Maximo de 5 digitos): ";
-  cin >> em.codigoEmpleado;
-  checkInputLength(em.codigoEmpleado, 5);
+  cin >> ep.codigoEmpleado;
+  checkInputLength(ep.codigoEmpleado, 5);
+  cout << endl;
   
   cout << "Ingrese su puesto en base a las siguientes opciones:" << endl;
   cout << "  1.- Ventas." << endl;
@@ -87,8 +104,8 @@ void empleados::capturar()
   cout << "  6.- Customer-Care" << endl;
   
   cout << "Eleccion: ";
-  cin >> em.puestoEmpleado;
-  checkInputRange(em.puestoEmpleado, 1, 6);
+  cin >> ep.puestoEmpleado;
+  checkInputRange(ep.puestoEmpleado, 1, 6);
   cout << endl;
 }
 
@@ -97,22 +114,22 @@ void empleados::capturar()
  */
 void empleados::mostrar() 
 {
-  cout << "--DATOS DEL EMPLEADO--" << endl;
+  cout << "--DATOS DEL EMPLEADO--" << endl << endl;
 
   cout << "Nombre: ";
   for (int i = 0; i < 3; ++i) {
-    cout << em.nombreEmpleado[i] << " ";
+    cout << ep.nombreEmpleado[i] << " ";
   }
   
   cout << endl;
+
+  cout << "Sucursal donde laboral el empleado: " << empleados::sucursalLaboral() << endl;
   
-  cout << "Sucursal donde laboral el empleado: " << em.sucursalEmpleado << endl;
-  
-  cout << "Codigo del empleado: " << em.codigoEmpleado << endl;
+  cout << "Codigo del empleado: " << ep.codigoEmpleado << endl;
    
   cout << "Puesto del empleado: ";
   
-  switch (em.puestoEmpleado) {
+  switch (ep.puestoEmpleado) {
     case 1:
       cout << "Ventas";
       break;
@@ -132,13 +149,13 @@ void empleados::mostrar()
       cout << "Customer-Care";
       break;
   }
-  cout << endl;
+  cout << endl << endl;
 }
 
 /**
  * Imprimimos informacion de la sucursal solicitada.
  */
-void sucursales::buscar()
+void empleados::buscar()
 {
   int codigo;
      
@@ -147,15 +164,15 @@ void sucursales::buscar()
     cin >> codigo;
     checkInputLength(codigo, 5);
     
-    if (em.codigoEmpleado == codigo) {
+    if (ep.codigoEmpleado == codigo) {
       cout << endl << "Nombre: ";
-      cout << em.codigoEmpleado;
+      cout << ep.codigoEmpleado << endl;
       
       cout << "Sucursal donde labora: ";
-      cout << empleados::sucursalLaboral();
+      cout << empleados::sucursalLaboral() << endl;
             
       cout << "Puesto: ";
-      switch (em.puestoEmpleado) {
+      switch (ep.puestoEmpleado) {
         case 1:
           cout << "Ventas";
           break;
@@ -207,15 +224,15 @@ int empleados::menu()
     
     switch (eleccion) {
       case 1:
-        em.capturar();
+        ep.capturar();
         cout << endl;
         break;
       case 2:
-        em.mostrar();
+        ep.mostrar();
         cout << endl;
         break;
       case 3:
-        em.buscar();
+        ep.buscar();
         cout << endl;
         break;
       case 4:
