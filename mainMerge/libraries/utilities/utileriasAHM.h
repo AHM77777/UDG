@@ -30,7 +30,7 @@ void pause()
 
 // Revisa rango de la opcion ingresada por usuario en buffer.
 int checkInputRange(int &input, int lowerBracket, int upperBracket)
-{ 
+{
   while (input < lowerBracket || input > upperBracket) {
     cout << "Opcion inexistente, intente de nuevo por favor" << endl;
     cout << "Eleccion: ";
@@ -46,16 +46,16 @@ int checkInputLength(int &input, int length)
 {
   int numDigits;
   float inputNum;
-  
+
   do {
     numDigits = 0;
     inputNum = input;
-  
+
     while (inputNum > 1) {
       ++numDigits;
       inputNum /= 10;
     }
-    
+
     if (numDigits > length) {
       cout << "El codigo tiene mas de 5 digitos, vuelvalo a introducir porfavor." << endl;
       cout << "Codigo: ";
@@ -65,5 +65,15 @@ int checkInputLength(int &input, int length)
   } while (numDigits > length);
 
   return input;
+}
+
+bool isLeapYear(int year) {
+  int isLeap = false;
+
+  if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) {
+    isLeap == true;
+  }
+
+  return isLeap;
 }
 #endif
