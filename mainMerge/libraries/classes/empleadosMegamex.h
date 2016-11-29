@@ -106,10 +106,11 @@ void empleados::capturar()
   cout << "  4.- Tecnicos." << endl;
   cout << "  5.- Operadoras." << endl;
   cout << "  6.- Customer-Care" << endl;
+  cout << "  7.- Contratista" << endl;
 
   cout << "Eleccion: ";
   cin >> ep.puestoEmpleado;
-  checkInputRange(ep.puestoEmpleado, 1, 6);
+  checkInputRange(ep.puestoEmpleado, 1, 7);
 }
 
 /**
@@ -150,6 +151,9 @@ void empleados::mostrar()
       break;
     case 6:
       cout << "Customer-Care";
+      break;
+    case 7:
+      cout << "Contratistas";
       break;
   }
   cout << endl;
@@ -193,6 +197,9 @@ void empleados::buscar()
           break;
         case 6:
           cout << "Customer-Care";
+          break;
+        case 7:
+          cout << "Contratistas";
           break;
       }
       cout << endl;
