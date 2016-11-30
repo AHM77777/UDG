@@ -5,6 +5,8 @@
 
 using namespace std;
 
+int contratosDisp = 0;
+
 /**
  * Declaracion de la clase principal.
  */
@@ -39,7 +41,7 @@ class contrato
         service = "Servicio no disponible";
       }
 
-      return servicio;
+      return service;
     }
 
     string clienteServido()
@@ -48,7 +50,7 @@ class contrato
 
       if (cl.numeroCliente != 0) {
         if (clienteContrato == cl.numeroCliente) {
-          client = cl.nombreCliente;
+          client = cl.nombreCliente[0] + " " + cl.nombreCliente[1] + " " + cl.nombreCliente[3];
         }
 
         else {
@@ -69,36 +71,36 @@ class contrato
 
       if (ep.codigoEmpleado != 0) {
         if (contratistaContrato == ep.codigoEmpleado) {
-          employee = ep.nombreEmpleado;
+          employee = ep.nombreEmpleado[0] + " " + ep.nombreEmpleado[1] + " " + ep.nombreEmpleado[2];
         }
       }
 
       return employee;
     }
 
-    int arreglarFechas()
+    int arreglarFechas(int fechas[])
     {
       // Revisamos dias introducidos para ver si superan el limite de dias en cada mes.
-      switch (fechaContrato[0]) {
+      switch (fechas[0]) {
         case 2:
-          if ((fechaContrato[1] > 28) && (isLeapYear(fechaContrato[2]) == false)) {
-            fechaContrato[1] = 28;
+          if ((fechas[1] > 28) && (isLeapYear(fechas[2]) == false)) {
+            fechas[1] = 28;
           }
-          if ((fechaContrato[1] > 29) && (isLeapYear(fechaContrato[2]) == true)) {
-            fechaContrato[1] = 29;
+          if ((fechas[1] > 29) && (isLeapYear(fechas[2]) == true)) {
+            fechas[1] = 29;
           }
           break;
         case 4:
         case 6:
         case 9:
         case 11:
-          if (fechaContrato[1] > 30) {
-            --fechaContrato;
+          if (fechas[1] > 30) {
+            --fechas[1];
           }
           break;
       }
 
-      return fechaContrato;
+      return 0;
     }
 } ct;
 
@@ -159,9 +161,9 @@ void contrato::capturar()
        */
       if (ep.codigoEmpleado != 0) {
         cout << "Estos son los empleados disponibles para esta casilla: " << endl;
-        cout << "1.-  ";
-        cout << "    Nombre: " << em.nombreEmpleado << endl;
-        cout << "    Codigo: " << em.codigoEmpleado << endl;
+        cout << "1.-";
+        cout << "    Nombre: " << ep.nombreEmpleado[0] << " " << ep.nombreEmpleado[1] << " " << ep.nombreEmpleado[2] << endl;
+        cout << "       Codigo: " << ep.codigoEmpleado << endl;
       }
 
       cout << "Codigo: ";
@@ -180,7 +182,7 @@ void contrato::capturar()
           cin >> ct.fechaContrato[i];
           while (ct.fechaContrato[i] > 12 || ct.fechaContrato[i] < 1) {
             cout << endl << "  Mes inexistente" << endl;
-            cout << "  Mes: "
+            cout << "  Mes: ";
             cin >> ct.fechaContrato[i];
             cout << endl;
           }
@@ -190,7 +192,7 @@ void contrato::capturar()
           cin >> ct.fechaContrato[i];
           while (ct.fechaContrato[i] > 31 || ct.fechaContrato[i] < 0) {
             cout << endl << "  Dia inexistente" << endl;
-            cout << "  Dia: "
+            cout << "  Dia: ";
             cin >> ct.fechaContrato[i];
             cout << endl;
           }
@@ -200,14 +202,14 @@ void contrato::capturar()
           cin >> ct.fechaContrato[i];
           while (ct.fechaContrato[i] > 2016 || ct.fechaContrato[i] < 1910) {
             cout << endl << "  A\xA4o no disponible" << endl;
-            cout << "  A\xA4o: "
+            cout << "  A\xA4o: ";
             cin >> ct.fechaContrato[i];
             cout << endl;
           }
           break;
       }
     }
-    ct.arreglarFechas();
+    ct.arreglarFechas(ct.fechaContrato);
 
     cout << "Ingrese el numero asignado al contrato (Maximo 5 digitos): ";
     cin >> ct.numeroContrato;
@@ -238,12 +240,8 @@ void contrato::mostrar()
   for (int i = 0; i < 3; ++i) {
     cout << ct.fechaContrato[i];
 
-    if (i == 0) {
-       cout << " ";
-    }
-
-    if (i == 2) {
-      cout << ", ";
+    if (i < 2) {
+       cout << "/";
     }
   }
   cout << endl;
@@ -271,12 +269,8 @@ void contrato::buscar()
       for (int i = 0; i < 3; ++i) {
         cout << ct.fechaContrato[i];
 
-        if (i == 0) {
-          cout << " ";
-        }
-
-        if (i == 2) {
-          cout << ", ";
+        if (i < 2) {
+          cout << "/";
         }
       }
       cout << endl;
@@ -296,13 +290,13 @@ void contrato::buscar()
   }
 }
 
-int cliente::menu()
+int contrato::menu()
 {
   do {
     cout << "Que deseas hacer?" << endl;
-    cout << "  1.- Capturar cliente." << endl;
-    cout << "  2.- Ver cliente." << endl;
-    cout << "  3.- Buscar cliente." << endl;
+    cout << "  1.- Capturar contrato." << endl;
+    cout << "  2.- Ver contrato." << endl;
+    cout << "  3.- Buscar contrato." << endl;
     cout << "  4.- Regresar a menu principal." << endl;
 
     cout << "Eleccion: ";
@@ -314,15 +308,15 @@ int cliente::menu()
 
     switch (eleccion) {
       case 1:
-        cl.capturar();
+        ct.capturar();
         cout << endl;
         break;
       case 2:
-        cl.mostrar();
+        ct.mostrar();
         cout << endl;
         break;
       case 3:
-        cl.buscar();
+        ct.buscar();
         cout << endl;
         break;
       case 4:
