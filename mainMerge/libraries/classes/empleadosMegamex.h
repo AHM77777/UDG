@@ -5,6 +5,8 @@
 
 using namespace std;
 
+int empleadosDisp = 0;
+
 /**
  * Declaracion de la clase principal.
  */

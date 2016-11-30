@@ -5,6 +5,8 @@
 
 using namespace std;
 
+int clientesDisp = 0;
+
 /**
  * Declaracion de la clase principal.
  */

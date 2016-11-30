@@ -5,6 +5,8 @@
 
 using namespace std;
 
+int serviciosDisp = 0;
+
 /**
  * Declaracion de la clase principal.
  */
@@ -15,7 +17,7 @@ class servicios
     string tituloServicio, descripcionServicio;
     int tipoServicio, codigoServicio;
     float costoServicio, comisionEmpleado;
-    
+
     // Metodos publicos de la clase servicio.
     void capturar();
     void mostrar();
@@ -39,7 +41,7 @@ void servicios::capturar()
     // Implementacion de ejemplos para nombramiento de titulo.
     if (sv.tituloServicio == "help") {
       int i = 0;
-      
+
       while (sv.tituloServicio == "help") {
          switch (i) {
            case 0:
@@ -53,9 +55,9 @@ void servicios::capturar()
            i = -1;
            break;
         }
-        
+
         i++;
-        
+
         cout << endl << "Titulo de servicio: ";
         getline(cin, sv.tituloServicio);
      }
@@ -98,7 +100,7 @@ void servicios::capturar()
 /**
  * Imprimimos los datos del servicio solicitado.
  */
-void servicios::mostrar() 
+void servicios::mostrar()
 {
   cout << "--DATOS DEL SERVICIO--" << endl;
 
@@ -133,28 +135,28 @@ void servicios::mostrar()
 void servicios::buscar()
 {
   int codigo;
-     
+
   while (fin == 1) {
     cout << "Inserte el codigo del servicio que desea ver (Asegurese que como"
     << " maximo contega 5 digitos): ";
     cin >> codigo;
     checkInputLength(codigo, 5);
     cout << endl;
-    
+
     if (sv.codigoServicio == codigo) {
       cout << "Titulo de servicio: ";
       cout << sv.tituloServicio << endl;
-      
+
       cout << "Costo de servicio: ";
       cout << sv.costoServicio << endl ;
-      
+
       cout << "Comision a empleado: ";
       cout << sv.comisionEmpleado << endl ;
     }
     else {
       cout << "Servicio solicitado inexistente." << endl << endl;
     }
-    
+
     cout << "Quieres revisar otro producto?" << endl;
     cout << "  1.- Si." << endl;
     cout << "  2.- No." << endl;
@@ -173,14 +175,14 @@ int servicios::menu()
     cout << "  2.- Ver servicios." << endl;
     cout << "  3.- Buscar servicio." << endl;
     cout << "  4.- Regresar a menu principal." << endl;
-  
+
     cout << "Eleccion: ";
-    
+
     cin >> eleccion;
     checkInputRange(eleccion, 1, 4);
-    
+
     cout <<endl;
-    
+
     switch (eleccion) {
       case 1:
         sv.capturar();
@@ -197,15 +199,15 @@ int servicios::menu()
       case 4:
         return 0;
     }
-    
+
     cout << "Deseas hacer algo mas?" << endl;
     cout << "  1.- Si." << endl;
     cout << "  2.- No." << endl;
     cout << "Eleccion: ";
-    
+
     cin >> fin;
     checkInputRange(fin, 1, 2);
-    
+
     cout << endl;
   } while (fin == 1);
 }
