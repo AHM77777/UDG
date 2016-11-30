@@ -3,6 +3,7 @@
 #include "./libraries/classes/sucursalesMegamex.h"
 #include "./libraries/classes/empleadosMegamex.h"
 #include "./libraries/classes/clientesMegamex.h"
+#include "./libraries/classes/contratosMegamex.h"
 
 using namespace std;
 
@@ -16,12 +17,12 @@ int main()
     cout << "  4.- Acceder a 'Clientes'." << endl;
     cout << "  5.- Acceder a 'Contratos'." << endl;
     cout << "  6.- Salir." << endl;
-  
+
     cout << "Eleccion: ";
     cin >> eleccion;
     checkInputRange(eleccion, 1, 6);
     cout << endl;
-    
+
     switch (eleccion) {
       case 1:
         sv.menu();
@@ -37,19 +38,23 @@ int main()
         break;
       case 4:
         cl.menu();
-	cout << endl;
-	break;
+    	cout << endl;
+    	break;
+      case 5:
+        ct.menu();
+        cout << endl;
+        break;
       case 6:
         cout << "Algo mas antes de irte?" << endl;
         cout << "  1.- Si." << endl;
         cout << "  2.- No." << endl;
         cout << "Eleccion: ";
-    
+
         cin >> fin;
         checkInputRange(fin, 1, 2);
-    
+
         cout << endl;
-        
+
         if (fin == 1) {
           break;
         }
