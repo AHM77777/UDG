@@ -259,20 +259,34 @@ void contrato::buscar()
   int codigo;
 
   while (fin == 1) {
-    cout << "Ingrese el numero del cliente que quiere ver (Maximo 5 digitos): ";
+    cout << "Ingrese el numero del contrato que quiere ver (Maximo 5 digitos): ";
     cin >> codigo;
     checkInputLength(codigo, 5);
 
-    if (codigo == cl.numeroCliente) {
-      cout << "Nombre de cliente: " << cl.nombreCliente << endl;
-      cout << "Telefono: " << cl.telefonoCliente << endl;
-      cout << "Correo Electronico: " << cl.correoECliente << endl;
-    }
-    else {
-      cout << "Cliente inexistente." << endl;
+    if (codigo == ct.numeroContrato) {
+      cout << "Servicio: " << ct.servicioServido() << endl;
+      cout << "Ciente: " << ct.clienteServido() << endl;
+      cout << "Contratista: " << ct.empleadoServidor() << endl;
+      cout << "Fecha del contrato: ";
+      for (int i = 0; i < 3; ++i) {
+        cout << ct.fechaContrato[i];
+
+        if (i == 0) {
+          cout << " ";
+        }
+
+        if (i == 2) {
+          cout << ", ";
+        }
+      }
+      cout << endl;
     }
 
-    cout << "Quiere buscar otro cliente?" << endl;
+    else {
+      cout << "Contrato inexistente." << endl;
+    }
+
+    cout << "Quiere buscar otro contrato?" << endl;
     cout << "  1.- Si." << endl;
     cout << "  2.- No." << endl;
     cout << "Eleccion: ";
