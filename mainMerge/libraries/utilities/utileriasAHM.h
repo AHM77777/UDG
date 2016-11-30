@@ -68,10 +68,10 @@ int checkInputLength(int &input, int length)
 }
 
 bool isLeapYear(int year) {
-  int isLeap = false;
+  bool isLeap = false;
 
   if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) {
-    isLeap == true;
+    isLeap = true;
   }
 
   return isLeap;
