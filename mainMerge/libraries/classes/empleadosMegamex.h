@@ -29,7 +29,7 @@ class empleados
         nombreS = sc.nombreSucursal;
       }
 
-      if (sc.codigoSucursal == NULL) {
+      if (sc.codigoSucursal == 0) {
         nombreS = "Ninguna (fuera de servicio).";
       }
 

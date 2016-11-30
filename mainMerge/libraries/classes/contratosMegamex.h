@@ -21,17 +21,63 @@ class contrato
     void buscar();
     int menu();
 
-    string servicioPrestado() {
-      string servicio;
+    string servicioServido()
+    {
+      string service;
 
-      if (ct.servicioContrato == sv.codigoServicio) {
-        servicio = sv.tituloServicio;
+      if (sv.codigoServicio != 0) {
+        if (servicioContrato == sv.codigoServicio) {
+          service = sv.tituloServicio;
+        }
+
+        else {
+          service = "Servicio no disponible";
+        }
+      }
+
+      else {
+        service = "Servicio no disponible";
       }
 
       return servicio;
     }
 
-    int arreglarFechas() {
+    string clienteServido()
+    {
+      string client;
+
+      if (cl.numeroCliente != 0) {
+        if (clienteContrato == cl.numeroCliente) {
+          client = cl.nombreCliente;
+        }
+
+        else {
+          client = "Cliente no disponible";
+        }
+      }
+
+      else {
+        client = "Cliente no disponible";
+      }
+
+      return client;
+    }
+
+    string empleadoServidor()
+    {
+      string employee;
+
+      if (ep.codigoEmpleado != 0) {
+        if (contratistaContrato == ep.codigoEmpleado) {
+          employee = ep.nombreEmpleado;
+        }
+      }
+
+      return employee;
+    }
+
+    int arreglarFechas()
+    {
       // Revisamos dias introducidos para ver si superan el limite de dias en cada mes.
       switch (fechaContrato[0]) {
         case 2:
@@ -61,125 +107,154 @@ class contrato
  */
 void contrato::capturar()
 {
-  int clienteAnt, contador = 0;
+  if (ep.codigoEmpleado != 0) {
+    int opAnt, contador = 0;
 
-  cout << "--INGRESE DATOS LOS DATOS DEL CONTRATO EFECTUADO--" << endl << endl;
+    cout << "--INGRESE DATOS LOS DATOS DEL CONTRATO EFECTUADO--" << endl << endl;
 
-  // Limpiamos buffer de cualquier caracter indeseado.
-  cin.ignore(1, '\n');
+    // Limpiamos buffer de cualquier caracter indeseado.
+    cin.ignore(1, '\n');
 
-  cout << "Ingrese el codigo del servicio que se prestara (Maximo 5 digitos): ";
-  cin >> ct.servicioContrato;
+    // @TODO: Check for a valid service number (that it exist).
+    cout << "Ingrese el codigo del servicio que se prestara (Maximo 5 digitos): ";
+    cin >> ct.servicioContrato;
+    checkInputLength(ct.servicioContrato, 5);
 
-  cout << "Ingrese el numero del cliente con el que se efectuo el contrato (Maximo 5 digitos): ";
-  cin >> ct.clienteContrato;
-  checkInputLength(ct.clienteContrato, 5);
-
-  // @TODO: Implement a function to create a client from here if he doesn't exist.
-  while (cl.numeroCliente != ct.clienteContrato) {
-    ++contador;
-
-    if (clienteAnt == ct.clienteContrato && contador > 1) {
-      break;
-    }
-
-    if (clienteAnt != ct.clienteContrato) {
-      clienteAnt = ct.clienteContrato;
-    }
-
-    cout << "Cliente inexistente, vuelva a ingresar el codigo para registrarlo. Ingrese cualquier otro codigo de no ser ese el caso." << endl;
-    cout << "Numero: ";
+    cout << "Ingrese el numero del cliente con el que se efectuo el contrato (Maximo 5 digitos): ";
     cin >> ct.clienteContrato;
     checkInputLength(ct.clienteContrato, 5);
 
-    cout << endl;
-  }
+    // @TODO: Implement a function to create a client from here if he doesn't exist.
+    while (cl.numeroCliente != ct.clienteContrato) {
+      ++contador;
 
-  cout << "Ingrese el codigo del empleado que efectuo el contrato (Maximo 5 digitos): ";
-  cin >> ct.contratistaContrato;
-  checkInputLength(ct.contratistaContrato, 5);
+      if (opAnt == ct.clienteContrato && contador > 1) {
+        contador = 0;
+        opAnt = 0;
+        break;
+      }
 
-  // @TODO: Add check for instances of "Empleados" which are 'Contratistas' to be printed out for the user (There should always be one available), otherwise leave empty and CANCEL contract.
-  while (ct.contratistaContrato != em.codigoEmpleado) {
-    cout << "Lo sentimos, el empleado ingresado no existe. Vuelva a ingresar el codigo de un empleado actual" << endl;
+      if (opAnt != ct.clienteContrato) {
+        opAnt = ct.clienteContrato;
+      }
 
-    cout << "Estos son los empleados disponibles para esta casilla: " << endl;
-    cout << "1.-  ";
-    cout << "    Nombre: " << em.nombreEmpleado << endl;
-    cout << "    Codigo: " << em.codigoEmpleado << endl;
-    cout << "Codigo: ";
+      cout << "Cliente inexistente, vuelva a ingresar el codigo para registrarlo. Ingrese cualquier otro codigo de no ser ese el caso." << endl;
+      cout << "Numero: ";
+      cin >> ct.clienteContrato;
+      checkInputLength(ct.clienteContrato, 5);
+
+      cout << endl;
+    }
+
+    cout << "Ingrese el codigo del empleado que efectuo el contrato (Maximo 5 digitos): ";
     cin >> ct.contratistaContrato;
     checkInputLength(ct.contratistaContrato, 5);
 
+    while (ct.contratistaContrato != ep.codigoEmpleado) {
+      cout << "Lo sentimos, no existe ningun empleado con ese codigo.";
+
+      /**
+       * @TODO: Add check for instances of "Empleados" which are 'Contratistas' to be printed out
+       * for the user (There should always be one available), otherwise leave empty and CANCEL contract.
+       */
+      if (ep.codigoEmpleado != 0) {
+        cout << "Estos son los empleados disponibles para esta casilla: " << endl;
+        cout << "1.-  ";
+        cout << "    Nombre: " << em.nombreEmpleado << endl;
+        cout << "    Codigo: " << em.codigoEmpleado << endl;
+      }
+
+      cout << "Codigo: ";
+      cin >> ct.contratistaContrato;
+      checkInputLength(ct.contratistaContrato, 5);
+
+      cout << endl;
+    }
+
+    cout << "Ingrese la fecha en que el contrato se efectuo como se le indica a continuacion" << endl;
+
+    for (int i = 0; i < 3; ++i) {
+      switch (i) {
+        case 0:
+          cout << "  Mes: ";
+          cin >> ct.fechaContrato[i];
+          while (ct.fechaContrato[i] > 12 || ct.fechaContrato[i] < 1) {
+            cout << endl << "  Mes inexistente" << endl;
+            cout << "  Mes: "
+            cin >> ct.fechaContrato[i];
+            cout << endl;
+          }
+          break;
+        case 1:
+          cout << "  Dia: ";
+          cin >> ct.fechaContrato[i];
+          while (ct.fechaContrato[i] > 31 || ct.fechaContrato[i] < 0) {
+            cout << endl << "  Dia inexistente" << endl;
+            cout << "  Dia: "
+            cin >> ct.fechaContrato[i];
+            cout << endl;
+          }
+          break;
+        case 2:
+          cout << "  A\xA4o: ";
+          cin >> ct.fechaContrato[i];
+          while (ct.fechaContrato[i] > 2016 || ct.fechaContrato[i] < 1910) {
+            cout << endl << "  A\xA4o no disponible" << endl;
+            cout << "  A\xA4o: "
+            cin >> ct.fechaContrato[i];
+            cout << endl;
+          }
+          break;
+      }
+    }
+    ct.arreglarFechas();
+
+    cout << "Ingrese el numero asignado al contrato (Maximo 5 digitos): ";
+    cin >> ct.numeroContrato;
+    checkInputLength(ct.numeroContrato, 5);
+
     cout << endl;
   }
 
-  cout << "Ingrese la fecha en que el contrato se efectuo como se le indica a continuacion" << endl;
-
-  for (int i = 0; i < 3; ++i) {
-    switch (i) {
-      case 0:
-        cout << "  Mes: ";
-        cin >> ct.fechaContrato[i];
-        while (ct.fechaContrato[i] > 12 || ct.fechaContrato[i] < 1) {
-          cout << endl << "  Mes inexistente" << endl;
-          cout << "  Mes: "
-          cin >> ct.fechaContrato[i];
-          cout << endl;
-        }
-        break;
-      case 1:
-        cout << "  Dia: ";
-        cin >> ct.fechaContrato[i];
-        while (ct.fechaContrato[i] > 31 || ct.fechaContrato[i] < 0) {
-          cout << endl << "  Dia inexistente" << endl;
-          cout << "  Dia: "
-          cin >> ct.fechaContrato[i];
-          cout << endl;
-        }
-        break;
-      case 2:
-        cout << "  A\xA4o: ";
-        cin >> ct.fechaContrato[i];
-        while (ct.fechaContrato[i] > 2016 || ct.fechaContrato[i] < 1910) {
-          cout << endl << "  A\xA4o no disponible" << endl;
-          cout << "  A\xA4o: "
-          cin >> ct.fechaContrato[i];
-          cout << endl;
-        }
-        break;
-    }
+  else {
+    cout << "No hay empleados disponibles por el momento. Vuelvalo a intentar mas tarde." << endl;
   }
-
-  cout << endl;
 }
 
 /**
- * Imprimimos los datos de los clientes registradis.
+ * Imprimimos los datos de los contratos registrados.
  */
-void cliente::mostrar()
+void contrato::mostrar()
 {
-  cout << "--DATOS DEL CLIENTE--" << endl;
+  cout << "--DATOS DEL CONTRATO--" << endl;
 
-  cout << "Nombre: " << cl.nombreCliente << endl;
+  cout << "Servicio: " << ct.servicioServido() << endl;
 
-  cout << "Direccion: ";
+  cout << "Cliente: " << ct.clienteServido() << endl;
 
-  for (int i = 0; i < 4; ++i) {
-    if (i == 3) {
-      cout << cl.direccionCliente[i] << endl;
+  cout << "Contratista: " << ct.empleadoServidor() << endl;
+
+  cout << "Fecha del contrato: ";
+  for (int i = 0; i < 3; ++i) {
+    cout << ct.fechaContrato[i];
+
+    if (i == 0) {
+       cout << " ";
     }
-    else {
-      cout << cl.direccionCliente[i] << ", ";
+
+    if (i == 2) {
+      cout << ", ";
     }
   }
+  cout << endl;
 
-  cout << "Telefono: " << cl.telefonoCliente << endl;
-  cout << "Correo Electronico: " << cl.correoECliente << endl;
-  cout << "Numero de cliente: " << cl.numeroCliente << endl;
+  cout << "Numero de contrato: " << ct.numeroContrato << endl;
 }
 
-void cliente::buscar()
+/**
+ * Imprimimos datos del contrato solicitado.
+ */
+void contrato::buscar()
 {
   int codigo;
 
