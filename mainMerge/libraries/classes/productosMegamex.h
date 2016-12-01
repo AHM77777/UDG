@@ -15,7 +15,7 @@ class productos
   public :
     // Variables publicas de la clase contrato.
     string nombreProducto;
-    int tipoProducto, cantidadProducto, codigoProducto;
+    int categoriaProducto, cantidadProducto, codigoProducto;
     float costoProducto;
 
     // Metodos publicos de la clase servicio.
@@ -29,7 +29,7 @@ class productosElectronica : public productos
 {
   public :
     // Variables publicas de clase productosElectronica.
-    int tipoProductoEl,
+    int tipoProductoEl;
 
 } pd[30];
 
@@ -57,7 +57,7 @@ void productos::capturar()
 
       cout << "Inserte la cantidad de este producto que va a introducir: ";
       cin >> pd[i].cantidadProducto;
-      cout << endl
+      cout << endl;
 
       cout << "Inserte el codigo identificador del producto (Maximo 5 digitos): ";
       cin >> pd[i].codigoProducto;
@@ -65,9 +65,9 @@ void productos::capturar()
 
       cout << "Ingrese el costo base del producto: ";
       cin >> pd[i].costoProducto;
-      cout << endl
+      cout << endl;
 
-      if (pd[i].tipoProducto == 1) {
+      if (pd[i].categoriaProducto == 1) {
         cout << "Ingrese el tipo de electronico que añadira" << endl;
         cout << "  1.- Laptop" << endl;
         cout << "  2.- Computadora de escritorio" << endl;
@@ -83,66 +83,43 @@ void productos::capturar()
 }
 
 /**
- * Imprimimos los datos de los contratos registrados.
+ * Imprimimos los datos de los productos registrados.
  */
-void contratos::mostrar()
+void productos::mostrar()
 {
-  for (int i = 0; i < contratosDisp; ++i) {
-    cout << "-- DATOS DEL CONTRATO "<< (i + 1) <<" --" << endl;
+  for (int i = 0; i < productosDisp; ++i) {
+    cout << "-- DATOS DEL PRODUCTO "<< (i + 1) <<" --" << endl;
 
-    cout << "Servicio: " << ct[i].servicioServido() << endl;
+    cout << "Nombre: " << pd[i].nombreProducto << endl;
 
-    cout << "Cliente: " << ct[i].clienteServido() << endl;
+    cout << "Categoria: " << pd[i].categoriaProducto << endl;
 
-    cout << "Contratista: " << ct[i].empleadoServidor() << endl;
-
-    cout << "Fecha del contrato: ";
-    for (int j = 0; j < 3; ++j) {
-      cout << ct[i].fechaContrato[j];
-
-      if (j < 2) {
-         cout << "/";
-      }
-    }
-    cout << endl;
-
-    cout << "Numero de contrato: " << ct[i].numeroContrato << endl;
+    cout << "Costo: " << pd[i].costoProducto << endl;
   }
 }
 
 /**
- * Imprimimos datos del contrato solicitado.
+ * Imprimimos los datos del producto solicitado.
  */
-void contratos::buscar()
+void productos::buscar()
 {
   int codigo;
 
   while (fin == 1) {
-    cout << "Ingrese el numero del contrato que quiere ver (Maximo 5 digitos): ";
+    cout << "Ingrese el numero del producto que quiere ver (Maximo 5 digitos): ";
     cin >> codigo;
     checkInputLength(codigo, 5);
 
-    for (int i = 0; i < contratosDisp; ++i) {
-      if (ct[i].numeroContrato == codigo) {
-        cout << "Servicio: " << ct[i].servicioServido() << endl;
-        cout << "Ciente: " << ct[i].clienteServido() << endl;
-        cout << "Contratista: " << ct[i].empleadoServidor() << endl;
-        cout << "Fecha del contrato: ";
-
-        for (int j = 0; j < 3; ++j) {
-          cout << ct[i].fechaContrato[j];
-
-          if (j < 2) {
-            cout << "/";
-          }
-        }
-
-        cout << endl << endl;
+    for (int i = 0; i < productosDisp; ++i) {
+      if (pd[i].codigoProducto == codigo) {
+        cout << "Nombre: " << pd[i].nombreProducto << endl;
+        cout << "Categoria: " << pd[i].categoriaProducto << endl;
+        cout << "Costo: " << pd[i].costoProducto << endl;
         break;
       }
 
-      if (i == (contratosDisp - 1) || contratosDisp == 0) {
-        cout << "Contrato inexistente" << endl;
+      if (i == (productosDisp - 1) || productosDisp == 0) {
+        cout << "Producto inexistente" << endl;
       }
 
       else {
@@ -150,7 +127,7 @@ void contratos::buscar()
       }
     }
 
-    cout << "Quiere buscar otro contrato?" << endl;
+    cout << "Quiere buscar otro producto?" << endl;
     cout << "  1.- Si." << endl;
     cout << "  2.- No." << endl;
     cout << "Eleccion: ";
@@ -160,13 +137,13 @@ void contratos::buscar()
   }
 }
 
-int contratos::menu()
+int productos::menu()
 {
   do {
     cout << "Que deseas hacer?" << endl;
-    cout << "  1.- Capturar contrato." << endl;
-    cout << "  2.- Ver contrato." << endl;
-    cout << "  3.- Buscar contrato." << endl;
+    cout << "  1.- Capturar un producto." << endl;
+    cout << "  2.- Ver todos los productos." << endl;
+    cout << "  3.- Buscar productos." << endl;
     cout << "  4.- Regresar a menu principal." << endl;
 
     cout << "Eleccion: ";
