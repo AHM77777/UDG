@@ -171,7 +171,9 @@ void servicios::buscar()
         cout << sv[i].costoServicio << endl ;
 
         cout << "Comision a empleado: ";
-        cout << sv[i].comisionEmpleado << endl ;
+        cout << sv[i].comisionEmpleado << endl << endl;
+
+        break;
       }
 
       if (i == (serviciosDisp - 1)) {
