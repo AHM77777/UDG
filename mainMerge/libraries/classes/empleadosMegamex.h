@@ -18,101 +18,147 @@ class empleados
     int sucursalEmpleado, codigoEmpleado, puestoEmpleado;
 
     // Metodos publicos de la clase empleados.
-    void capturar();
-    void mostrar();
-    void buscar();
-    void modificar();
-    int menu();
+    static void capturar();
+    static void mostrar();
+    static void buscar();
+    static void modificar();
+    static int menu();
 
     string sucursalLaboral()
     {
       string nombreS;
-      if (sucursalEmpleado == sc.codigoSucursal) {
-        nombreS = sc.nombreSucursal;
+
+      if (sucursalesDisp > 0) {
+        for (int i = 0; i < sucursalesDisp; ++i) {
+          if (sucursalEmpleado == sc[i].codigoSucursal) {
+            nombreS = sc[i].nombreSucursal;
+          }
+
+          else {
+            continue;
+          }
+        }
       }
 
-      if (sc.codigoSucursal == 0) {
-        nombreS = "Ninguna (fuera de servicio).";
+      else {
+        nombreS = "Ninguna (fuera de servicio)";
       }
 
       return nombreS;
     };
-} ep;
+
+    bool sucursalValida(int sucursal)
+    {
+      bool sucursalValida = false;
+      for (int i = 0; i < sucursalesDisp; ++i) {
+        if (sucursal == sc[i].codigoSucursal) {
+          sucursalValida = true;
+        }
+      }
+
+      return sucursalValida;
+    };
+} ep[10];
+
+/**
+ * Funcion para revisar si sucursal introducida es valida.
+ */
+
 
 /**
  * Recopilamos los datos del empleado.
  */
 void empleados::capturar()
 {
-  int sucursalAnt, contador = 0;
+  int sucursalAnt, amountToRegister = 0, contador = 0;
 
-  cout << "--INGRESE LOS DATOS DEL EMPLEADO--" << endl << endl;
-
-  // Limpiamos buffer de cualquier caracter indeseado.
-  cin.ignore(1, '\n');
-
-  // @TODO: Function to make sure that no invalid characters get introduced in the name.
-  cout << "Ingrese el su(s) nombre(s) y apellidos como se le indicara a continuacion: " << endl;
-
-  for (int i = 0; i < 3; ++i) {
-    switch (i) {
-      case 0:
-        cout << "  Nombre(s): ";
-        break;
-      case 1:
-        cout << "  Apellido Paterno: ";
-        break;
-      case 2:
-        cout << "  Apellido Materno: ";
-        break;
-    }
-
-    cin.sync(); // Limpiamos buffer de caracteres indeseados paea registrar nombres.
-    getline(cin, ep.nombreEmpleado[i]);
+  if (sucursalesDisp == 0) {
+    cout << "Imposible registrar un empleado sin sucursales abiertas" << endl;
   }
 
-  cout << endl << "Ingrese el codigo de la sucursal donde labora el empleado (Maximo de 5 digitos): ";
-  cin >> ep.sucursalEmpleado;
-  checkInputLength(ep.sucursalEmpleado, 5);
-  sucursalAnt = ep.sucursalEmpleado;
-  cout << endl;
+  if ((10 - empleadosDisp) > 0) {
+    cout << "Inserte el numero de empleados que desea capturar (Maximo " << (10 - sucursalesDisp) << "): ";
+    cin >> amountToRegister;
+    checkInputRange(amountToRegister, 1, (10 - empleadosDisp));
 
-  while (ep.sucursalEmpleado != sc.codigoSucursal) {
-    ++contador;
+    for (int i = 0; i < amountToRegister; ++i) {
+      cout << "--INGRESE LOS DATOS DEL EMPLEADO--" << endl << endl;
 
-    if (sucursalAnt == ep.sucursalEmpleado && contador > 1) {
-      break;
+      // Limpiamos buffer de cualquier caracter indeseado.
+      cin.sync();
+
+      // @TODO: Function to make sure that no invalid characters get introduced in the name.
+      cout << "Ingrese el su(s) nombre(s) y apellidos como se le indicara a continuacion: " << endl;
+
+      for (int j = 0; j < 3; ++j) {
+        switch (j) {
+          case 0:
+            cout << "  Nombre(s): ";
+            break;
+          case 1:
+            cout << "  Apellido Paterno: ";
+            break;
+          case 2:
+            cout << "  Apellido Materno: ";
+            break;
+        }
+
+        cin.sync(); // Limpiamos buffer de caracteres indeseados paea registrar nombres.
+        getline(cin, ep[i].nombreEmpleado[j]);
+      }
+
+      cout << endl << "Ingrese el codigo de la sucursal donde labora el empleado (Maximo de 5 digitos): ";
+      cin >> ep[i].sucursalEmpleado;
+      checkInputLength(ep[i].sucursalEmpleado, 5);
+      sucursalAnt = ep[i].sucursalEmpleado;
+      cout << endl;
+
+      while (ep[i].sucursalValida(ep[i].sucursalEmpleado) == false) {
+        ++contador;
+
+        if (sucursalAnt == ep[i].sucursalEmpleado && contador > 1) {
+          break;
+        }
+
+        if (sucursalAnt != ep[i].sucursalEmpleado) {
+          sucursalAnt = ep[i].sucursalEmpleado;
+        }
+
+        cout << "Sucursal inexistente, vuelva a ingresar el codigo para registrarlo. Ingrese cualquier otro codigo de no ser ese el caso." << endl;
+        cout << "Codigo: ";
+        cin >> ep[i].sucursalEmpleado;
+        checkInputLength(ep[i].sucursalEmpleado, 5);
+
+        cout << endl;
+      }
+
+      cout << "Introduzca el codigo del empleado (Maximo de 5 digitos): ";
+      cin >> ep[i].codigoEmpleado;
+      checkInputLength(ep[i].codigoEmpleado, 5);
+      cout << endl;
+
+      cout << "Ingrese su puesto en base a las siguientes opciones:" << endl;
+      cout << "  1.- Ventas." << endl;
+      cout << "  2.- Administracion." << endl;
+      cout << "  3.- IT." << endl;
+      cout << "  4.- Tecnicos." << endl;
+      cout << "  5.- Operadoras." << endl;
+      cout << "  6.- Customer-Care" << endl;
+      cout << "  7.- Contratista" << endl;
+
+      cout << "Eleccion: ";
+      cin >> ep[i].puestoEmpleado;
+     checkInputRange(ep[i].puestoEmpleado, 1, 7);
     }
 
-    if (sucursalAnt != ep.sucursalEmpleado) {
-      sucursalAnt = ep.sucursalEmpleado;
-    }
-
-    cout << "Sucursal inexistente, vuelva a ingresar el codigo para registrarlo. Ingrese cualquier otro codigo de no ser ese el caso." << endl;
-    cout << "Codigo: ";
-    cin >> ep.sucursalEmpleado;
-    checkInputLength(ep.sucursalEmpleado, 5);
-
-    cout << endl;
+    ++empleadosDisp;
   }
 
-  cout << "Introduzca el codigo del empleado (Maximo de 5 digitos): ";
-  cin >> ep.codigoEmpleado;
-  checkInputLength(ep.codigoEmpleado, 5);
+  else {
+    cout << "Imposible registrar mas empleados" << endl;
+  }
+
   cout << endl;
-
-  cout << "Ingrese su puesto en base a las siguientes opciones:" << endl;
-  cout << "  1.- Ventas." << endl;
-  cout << "  2.- Administracion." << endl;
-  cout << "  3.- IT." << endl;
-  cout << "  4.- Tecnicos." << endl;
-  cout << "  5.- Operadoras." << endl;
-  cout << "  6.- Customer-Care" << endl;
-  cout << "  7.- Contratista" << endl;
-
-  cout << "Eleccion: ";
-  cin >> ep.puestoEmpleado;
-  checkInputRange(ep.puestoEmpleado, 1, 7);
 }
 
 /**
@@ -120,44 +166,47 @@ void empleados::capturar()
  */
 void empleados::mostrar()
 {
-  cout << "--DATOS DEL EMPLEADO--" << endl << endl;
+  for (int i = 0; i < empleadosDisp; ++i) {
+    cout << "-- DATOS DEL EMPLEADO " << (i + 1) << "--" << endl;
 
-  cout << "Nombre: ";
-  for (int i = 0; i < 3; ++i) {
-    cout << ep.nombreEmpleado[i] << " ";
+    cout << "Nombre: ";
+    for (int j = 0; j < 3; ++j) {
+      cout << ep[i].nombreEmpleado[j] << " ";
+    }
+
+    cout << endl;
+
+    cout << "Sucursal donde laboral el empleado: " << ep[i].sucursalLaboral() << endl;
+
+    cout << "Codigo del empleado: " << ep[i].codigoEmpleado << endl;
+
+    cout << "Puesto del empleado: ";
+
+    switch (ep[i].puestoEmpleado) {
+      case 1:
+        cout << "Ventas";
+        break;
+      case 2:
+        cout << "Administracion";
+        break;
+      case 3:
+        cout << "IT";
+        break;
+      case 4:
+        cout << "Tecnicos";
+        break;
+      case 5:
+        cout << "Operadoras";
+        break;
+      case 6:
+        cout << "Customer-Care";
+        break;
+      case 7:
+        cout << "Contratistas";
+        break;
+    }
   }
 
-  cout << endl;
-
-  cout << "Sucursal donde laboral el empleado: " << empleados::sucursalLaboral() << endl;
-
-  cout << "Codigo del empleado: " << ep.codigoEmpleado << endl;
-
-  cout << "Puesto del empleado: ";
-
-  switch (ep.puestoEmpleado) {
-    case 1:
-      cout << "Ventas";
-      break;
-    case 2:
-      cout << "Administracion";
-      break;
-    case 3:
-      cout << "IT";
-      break;
-    case 4:
-      cout << "Tecnicos";
-      break;
-    case 5:
-      cout << "Operadoras";
-      break;
-    case 6:
-      cout << "Customer-Care";
-      break;
-    case 7:
-      cout << "Contratistas";
-      break;
-  }
   cout << endl;
 }
 
@@ -173,41 +222,49 @@ void empleados::buscar()
     cin >> codigo;
     checkInputLength(codigo, 5);
 
-    if (ep.codigoEmpleado == codigo) {
-      cout << endl << "Nombre: ";
-      cout << ep.codigoEmpleado << endl;
+    for (int i = 0; i < empleadosDisp; ++i) {
+      if (ep[i].codigoEmpleado == codigo) {
+        cout << endl << "Nombre: ";
+        cout << ep[i].codigoEmpleado << endl;
 
-      cout << "Sucursal donde labora: ";
-      cout << empleados::sucursalLaboral() << endl;
+        cout << "Sucursal donde labora: ";
+        cout << ep[i].sucursalLaboral() << endl;
 
-      cout << "Puesto: ";
-      switch (ep.puestoEmpleado) {
-        case 1:
-          cout << "Ventas";
-          break;
-        case 2:
-          cout << "Administracion";
-          break;
-        case 3:
-          cout << "IT";
-          break;
-        case 4:
-          cout << "Tecnicos";
-          break;
-        case 5:
-          cout << "Operadoras";
-          break;
-        case 6:
-          cout << "Customer-Care";
-          break;
-        case 7:
-          cout << "Contratistas";
-          break;
+        cout << "Puesto: ";
+        switch (ep[i].puestoEmpleado) {
+          case 1:
+            cout << "Ventas";
+            break;
+          case 2:
+            cout << "Administracion";
+            break;
+          case 3:
+            cout << "IT";
+            break;
+          case 4:
+            cout << "Tecnicos";
+            break;
+          case 5:
+            cout << "Operadoras";
+            break;
+          case 6:
+            cout << "Customer-Care";
+            break;
+          case 7:
+            cout << "Contratistas";
+            break;
+        }
+
+        cout << endl;
       }
-      cout << endl;
-    }
-    else {
-      cout << "Empleado inexistente." << endl;
+
+      if (i == (empleadosDisp - 1)) {
+        cout << "Empleado inexistente" << endl;
+      }
+
+      else {
+        continue;
+      }
     }
 
     cout << "Quiere buscar otro empleado?" << endl;
@@ -224,7 +281,7 @@ int empleados::menu()
 {
   do {
     cout << "Que deseas hacer?" << endl;
-    cout << "  1.- Capturar empleado." << endl;
+    cout << "  1.- Capturar empleados." << endl;
     cout << "  2.- Ver todos los empleados." << endl;
     cout << "  3.- Buscar empleados." << endl;
     cout << "  4.- Regresar a menu principal." << endl;
@@ -236,15 +293,15 @@ int empleados::menu()
 
     switch (eleccion) {
       case 1:
-        ep.capturar();
+        empleados::capturar();
         cout << endl;
         break;
       case 2:
-        ep.mostrar();
+        empleados::mostrar();
         cout << endl;
         break;
       case 3:
-        ep.buscar();
+        empleados::buscar();
         cout << endl;
         break;
       case 4:
