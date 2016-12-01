@@ -43,7 +43,7 @@ void sucursales::capturar()
       cin.sync();
 
       // @TODO: Function to make sure that no invalid characters get introduced in the name.
-/*      cout << "Ingrese el nombre de la sucursal: ";
+      cout << "Ingrese el nombre de la sucursal: ";
       getline(cin, sc[i].nombreSucursal);
 
       cout << endl << "A continuacion se le pedira informacion referente a la direccion de"
@@ -83,7 +83,7 @@ void sucursales::capturar()
       for (int j = 0; j < 3; ++j) {
         cout << "  Telefono " << (j + 1) << ": ";
         cin >> sc[i].telefonosSucursal[j];
-      }*/
+      }
 
       ++sucursalesDisp;
     }
@@ -164,6 +164,8 @@ void sucursales::buscar()
           cout << "  " << (j + 1) << ".- " << sc[i].telefonosSucursal[j] << endl;
         }
         cout << endl;
+
+        break;
       }
 
       if (i == (sucursalesDisp - 1)) {
