@@ -89,6 +89,10 @@ void sucursales::capturar()
     }
   }
 
+  else {
+    cout << "Imposible agregar mas sucursales" << endl;
+  }
+
   cout << endl;
 }
 
