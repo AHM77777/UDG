@@ -27,17 +27,18 @@ class contratos
     {
       string service;
 
-      if (sv.codigoServicio != 0) {
-        if (servicioContrato == sv.codigoServicio) {
-          service = sv.tituloServicio;
+      for (int i = 0; i < serviciosDisp; ++i) {
+        if (servicioContrato == sv[i].codigoServicio) {
+          service = sv[i].tituloServicio;
+          break;
         }
 
         else {
-          service = "Servicio no disponible";
+          continue;
         }
       }
 
-      else {
+      if (service.empty()) {
         service = "Servicio no disponible";
       }
 
@@ -48,17 +49,18 @@ class contratos
     {
       string client;
 
-      if (cl.numeroCliente != 0) {
-        if (clienteContrato == cl.numeroCliente) {
-          client = cl.nombreCliente[0] + " " + cl.nombreCliente[1] + " " + cl.nombreCliente[3];
+      for (int i = 0; i < clientesDisp; ++i) {
+        if (clienteContrato == cl[i].numeroCliente) {
+          client = cl[i].nombreCliente[0] + " " + cl[i].nombreCliente[1] + " " + cl[i].nombreCliente[3];
+          break;
         }
 
         else {
-          client = "Cliente no disponible";
+          continue;
         }
       }
 
-      else {
+      if (client.empty()) {
         client = "Cliente no disponible";
       }
 
@@ -69,9 +71,13 @@ class contratos
     {
       string employee;
 
-      if (ep.codigoEmpleado != 0) {
-        if (contratistaContrato == ep.codigoEmpleado) {
-          employee = ep.nombreEmpleado[0] + " " + ep.nombreEmpleado[1] + " " + ep.nombreEmpleado[2];
+      for (int i = 0; i < empleadosDisp; ++i) {
+        if (contratistaContrato == ep[i].codigoEmpleado) {
+          employee = ep[i].nombreEmpleado[0] + " " + ep[i].nombreEmpleado[1] + " " + ep[i].nombreEmpleado[2];
+        }
+
+        else {
+          continue;
         }
       }
 
@@ -109,8 +115,9 @@ class contratos
     bool clienteValido(int client)
     {
       bool cliente = false;
+
       for (int i = 0; i < clientesDisp; ++i) {
-        if (client == clienteContrato) {
+        if (client == cl[i].numeroCliente) {
           cliente = true;
         }
       }
@@ -121,6 +128,7 @@ class contratos
     bool empleadoValido(int employee)
     {
       bool empleado = false;
+
       for (int i = 0; i < empleadosDisp; ++i) {
         if ((employee == ep[i].codigoEmpleado) && (ep[i].puestoEmpleado == 7)) {
           empleado = true;
@@ -128,15 +136,15 @@ class contratos
       }
 
       return empleado;
-    }
+    };
 } ct[20];
 
 /**
  * Recopilamos los de los contratos.
  */
-void contrato::capturar()
+void contratos::capturar()
 {
-  int opAnt, amountToRegister = 0 contador = 0;
+  int opAnt, amountToRegister = 0, contador = 0;
   bool contratistaDisp = false;
 
   /**
@@ -154,7 +162,7 @@ void contrato::capturar()
   }
 
   if (empleadosDisp == 0 || contratistaDisp == false) {
-    cout << "Imposible crear un contrato sin empleados disponibles"
+    cout << "Imposible crear un contrato sin empleados disponibles";
     return;
   }
 
@@ -171,7 +179,7 @@ void contrato::capturar()
 
       // @TODO: Check for a valid service number (that it exist).
       cout << "Ingrese el codigo del servicio que se prestara (Maximo 5 digitos): ";
-      cin >> ct.servicioContrato;
+      cin >> ct[i].servicioContrato;
       checkInputLength(ct[i].servicioContrato, 5);
 
       cout << "Ingrese el numero del cliente con el que se efectuo el contrato (Maximo 5 digitos): ";
@@ -179,7 +187,7 @@ void contrato::capturar()
       checkInputLength(ct[i].clienteContrato, 5);
 
       // @TODO: Implement a function to create a client from here if he doesn't exist.
-      while (ct[i].clienteContrato(ct[i].clienteContrato) == false) {
+      while ((ct[i].clienteValido(ct[i].clienteContrato)) == false) {
         ++contador;
 
         if (opAnt == ct[i].clienteContrato && contador > 1) {
@@ -278,33 +286,35 @@ void contrato::capturar()
 /**
  * Imprimimos los datos de los contratos registrados.
  */
-void contrato::mostrar()
+void contratos::mostrar()
 {
-  cout << "--DATOS DEL CONTRATO--" << endl;
+  for (int i = 0; i < contratosDisp; ++i) {
+    cout << "-- DATOS DEL CONTRATO "<< (i + 1) <<" --" << endl;
 
-  cout << "Servicio: " << ct.servicioServido() << endl;
+    cout << "Servicio: " << ct[i].servicioServido() << endl;
 
-  cout << "Cliente: " << ct.clienteServido() << endl;
+    cout << "Cliente: " << ct[i].clienteServido() << endl;
 
-  cout << "Contratista: " << ct.empleadoServidor() << endl;
+    cout << "Contratista: " << ct[i].empleadoServidor() << endl;
 
-  cout << "Fecha del contrato: ";
-  for (int i = 0; i < 3; ++i) {
-    cout << ct.fechaContrato[i];
+    cout << "Fecha del contrato: ";
+    for (int j = 0; j < 3; ++j) {
+      cout << ct[i].fechaContrato[j];
 
-    if (i < 2) {
-       cout << "/";
+      if (j < 2) {
+         cout << "/";
+      }
     }
-  }
-  cout << endl;
+    cout << endl;
 
-  cout << "Numero de contrato: " << ct.numeroContrato << endl;
+    cout << "Numero de contrato: " << ct[i].numeroContrato << endl;
+  }
 }
 
 /**
  * Imprimimos datos del contrato solicitado.
  */
-void contrato::buscar()
+void contratos::buscar()
 {
   int codigo;
 
@@ -313,23 +323,32 @@ void contrato::buscar()
     cin >> codigo;
     checkInputLength(codigo, 5);
 
-    if (codigo == ct.numeroContrato) {
-      cout << "Servicio: " << ct.servicioServido() << endl;
-      cout << "Ciente: " << ct.clienteServido() << endl;
-      cout << "Contratista: " << ct.empleadoServidor() << endl;
-      cout << "Fecha del contrato: ";
-      for (int i = 0; i < 3; ++i) {
-        cout << ct.fechaContrato[i];
+    for (int i = 0; i < contratosDisp; ++i) {
+      if (ct[i].numeroContrato == codigo) {
+        cout << "Servicio: " << ct[i].servicioServido() << endl;
+        cout << "Ciente: " << ct[i].clienteServido() << endl;
+        cout << "Contratista: " << ct[i].empleadoServidor() << endl;
+        cout << "Fecha del contrato: ";
 
-        if (i < 2) {
-          cout << "/";
+        for (int j = 0; j < 3; ++j) {
+          cout << ct[i].fechaContrato[j];
+
+          if (j < 2) {
+            cout << "/";
+          }
         }
-      }
-      cout << endl;
-    }
 
-    else {
-      cout << "Contrato inexistente." << endl;
+        cout << endl << endl;
+        break;
+      }
+
+      if (i == (contratosDisp - 1) || contratosDisp == 0) {
+        cout << "Contrato inexistente" << endl;
+      }
+
+      else {
+        continue;
+      }
     }
 
     cout << "Quiere buscar otro contrato?" << endl;
@@ -342,7 +361,7 @@ void contrato::buscar()
   }
 }
 
-int contrato::menu()
+int contratos::menu()
 {
   do {
     cout << "Que deseas hacer?" << endl;
@@ -360,15 +379,15 @@ int contrato::menu()
 
     switch (eleccion) {
       case 1:
-        ct.capturar();
+        contratos::capturar();
         cout << endl;
         break;
       case 2:
-        ct.mostrar();
+        contratos::mostrar();
         cout << endl;
         break;
       case 3:
-        ct.buscar();
+        contratos::buscar();
         cout << endl;
         break;
       case 4:
