@@ -10,7 +10,7 @@ int contratosDisp = 0;
 /**
  * Declaracion de la clase principal.
  */
-class contrato
+class contratos
 {
   public :
     // Variables publicas de la clase contrato.
@@ -18,10 +18,10 @@ class contrato
     fechaContrato[3], numeroContrato;
 
     // Metodos publicos de la clase servicio.
-    void capturar();
-    void mostrar();
-    void buscar();
-    int menu();
+    static void capturar();
+    static void mostrar();
+    static void buscar();
+    static int menu();
 
     string servicioServido()
     {
@@ -42,7 +42,7 @@ class contrato
       }
 
       return service;
-    }
+    };
 
     string clienteServido()
     {
@@ -63,7 +63,7 @@ class contrato
       }
 
       return client;
-    }
+    };
 
     string empleadoServidor()
     {
@@ -76,7 +76,7 @@ class contrato
       }
 
       return employee;
-    }
+    };
 
     int arreglarFechas(int fechas[])
     {
@@ -101,17 +101,38 @@ class contrato
       }
 
       return 0;
-    }
-} ct;
+    };
+} ct[20];
 
 /**
- * Recopilamos los del contrato.
+ * Recopilamos los de los contratos.
  */
 void contrato::capturar()
 {
-  if (ep.codigoEmpleado != 0) {
-    int opAnt, contador = 0;
+  int opAnt, contador = 0;
+  bool contratistaDisp = false;
 
+  for (int i = 0; i < empleadosDisp; ++i) {
+    if (empleadosDisp == 0) {
+      break;
+    }
+
+    if (ep[i].puestoEmpleado == 7) {
+      contratistaDisp = true;
+      break;
+    }
+
+    else {
+      continue;
+    }
+  }
+
+  if (empleadosDisp == 0 || contratistaDisp == false) {
+    cout << "Imposible crear un contrato sin empleados disponibles"
+    return;
+  }
+
+  if (ep.codigoEmpleado != 0) {
     cout << "--INGRESE DATOS LOS DATOS DEL CONTRATO EFECTUADO--" << endl << endl;
 
     // Limpiamos buffer de cualquier caracter indeseado.
