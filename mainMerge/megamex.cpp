@@ -47,13 +47,6 @@ int main()
         cout << endl;
         break;
       case 6:
-        int tipo;
-
-        cout << "Porfavor, especifique el tipo de producto que desea registrar de las opciones disponibles" << endl;
-        cout << "  1.- Electronica" << endl;
-        cin >> tipo;
-        checkInputRange(tipo, 1, 1);
-
         productos::menu();
         cout << endl;
         break;
