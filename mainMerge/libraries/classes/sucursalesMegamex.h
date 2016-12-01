@@ -18,96 +18,111 @@ class sucursales
     int codigoSucursal, telefonosSucursal[3];
 
     // Metodos publicos de la clase sucursal.
-    void capturar();
-    void mostrar();
-    void buscar();
-    int menu();
-} sc;
+    static void capturar();
+    static void mostrar();
+    static void buscar();
+    static int menu();
+} sc[10];
 
 /**
- * Recopilamos los datos de la sucursal.
+ * Recopilamos los datos de las sucursales.
  */
 void sucursales::capturar()
 {
-  cout << "--INGRESE DATOS DE LA SUCURSAL--" << endl << endl;
+  int amountToRegister = 0;
 
-  // Limpiamos buffer de cualquier caracter indeseado.
-  cin.ignore(1, '\n');
+  if ((10 - sucursalesDisp) > 0) {
+    cout << "Inserte el numero de sucursales que desea capturar (Maximo " << (10 - sucursalesDisp) << "): ";
+    cin >> amountToRegister;
+    checkInputRange(amountToRegister, 1, (10 - sucursalesDisp));
 
-  // @TODO: Function to make sure that no invalid characters get introduced in the name.
-  cout << "Ingrese el nombre de la sucursal: ";
-  getline(cin, sc.nombreSucursal);
+    for (int i = 0; i < amountToRegister; ++i) {
+      cout << " --INGRESE LOS DATOS DE LA SUCURSAL " << (i + 1) << " --" << endl;
 
-  cout << endl << "A continuacion se le pedira informacion referente a la direccion de"
-  << " la sucursal" << endl;
+      // Limpiamos buffer de cualquier caracter indeseado.
+      cin.sync();
 
-  for (int i = 0; i < 4; ++i) {
-    switch(i) {
-      case 0:
-        cout << "  Direccion (Calle, Numero, Colonia): ";
-        break;
-      case 1:
-        cout << "  Ciudad: ";
-        break;
-      case 2:
-        cout << "  Estado: ";
-        break;
-      case 3:
-        cout << "  Codigo Postal: ";
-        break;
+      // @TODO: Function to make sure that no invalid characters get introduced in the name.
+/*      cout << "Ingrese el nombre de la sucursal: ";
+      getline(cin, sc[i].nombreSucursal);
+
+      cout << endl << "A continuacion se le pedira informacion referente a la direccion de"
+      << " la sucursal" << endl;
+
+      for (int j = 0; j < 4; ++j) {
+        switch(j) {
+          case 0:
+            cout << "  Direccion (Calle, Numero, Colonia): ";
+            break;
+          case 1:
+            cout << "  Ciudad: ";
+            break;
+          case 2:
+            cout << "  Estado: ";
+            break;
+          case 3:
+            cout << "  Codigo Postal: ";
+            break;
+        }
+
+        // Limpiamos buffer para ingresar el string que introducira el usuario.
+        cin.sync();
+        getline(cin, sc[i].direccionSucursal[j]);
+      }
+
+      cout << endl << "Introduzca el codigo identificador de la sucursal (asegurese que se "
+      << "contenga solo 5 digitos porfavor): ";
+      cin >> sc[i].codigoSucursal;
+      checkInputLength(sc[i].codigoSucursal, 5);
+      cout << endl;
+
+      cout << "A continuacion se le pedira que introduzca los tres numeros de"
+      << " telefono con los que su sucursal cuenta:" << endl;
+
+      // @TODO: Function to check if inserted number is valid.
+      for (int j = 0; j < 3; ++j) {
+        cout << "  Telefono " << (j + 1) << ": ";
+        cin >> sc[i].telefonosSucursal[j];
+      }*/
+
+      ++sucursalesDisp;
     }
-
-    // Limpiamos buffer para ingresar el string que introducira el usuario.
-    cin.sync();
-    getline(cin, sc.direccionSucursal[i]);
-  }
-
-  cout << endl << "Introduzca el codigo identificador de la sucursal (asegurese que se "
-  << "contenga solo 5 digitos porfavor): ";
-  cin >> sc.codigoSucursal;
-  checkInputLength(sc.codigoSucursal, 5);
-  cout << endl;
-
-  cout << "A continuacion se le pedira que introduzca los tres numeros de"
-  << " telefono con los que su sucursal cuenta:" << endl;
-
-  // @TODO: Function to check if inserted number is valid.
-  for (int i = 0; i < 3; ++i) {
-    cout << "  Telefono " << (i + 1) << ": ";
-    cin >> sc.telefonosSucursal[i];
   }
 
   cout << endl;
 }
 
 /**
- * Imprimimos los datos de la sucursal.
+ * Imprimimos los datos de las sucursales.
  */
 void sucursales::mostrar()
 {
-  cout << "--DATOS DE LA SUCURSAL--" << endl;
+  for (int i = 0; i < sucursalesDisp; ++i) {
+    cout << "-- DATOS DE LA SUCURSAL " << (i + 1) << " --" << endl;
 
-  cout << "Nombre: " << sc.nombreSucursal << endl;
+    cout << "Nombre: " << sc[i].nombreSucursal << endl;
 
-  cout << "Direccion: ";
+    cout << "Direccion: ";
 
-  for (int i = 0; i < 4; ++i) {
-    if (i == 3) {
-      cout << sc.direccionSucursal[i] << endl;
+    for (int j = 0; j < 4; ++j) {
+      if (j == 3) {
+        cout << sc[i].direccionSucursal[j] << endl;
+      }
+      else {
+        cout << sc[i].direccionSucursal[j] << ", ";
+      }
     }
-    else {
-      cout << sc.direccionSucursal[i] << ", ";
+
+    cout << "Codigo: " << sc[i].codigoSucursal << endl;
+
+    cout << "Telefonos:" << endl;
+
+    for (int j = 0; j < 3; ++j) {
+      // @TODO: Format output of phone numbers to be formatted for the user.
+      cout << "  " << (j + 1) << ".- " << sc[i].telefonosSucursal[j] << endl;
     }
   }
 
-  cout << "Codigo: " << sc.codigoSucursal << endl;
-
-  cout << "Telefonos:" << endl;
-
-  for (int i = 0; i < 3; ++i) {
-    // @TODO: Format output of phone numbers to be formatted for the user.
-    cout << "  " << (i + 1) << ".- " << sc.telefonosSucursal[i] << endl;
-  }
   cout << endl;
 }
 
@@ -124,29 +139,36 @@ void sucursales::buscar()
     cin >> codigo;
     checkInputLength(codigo, 5);
 
-    if (sc.codigoSucursal == codigo) {
-      cout << endl << "Nombre de sucursal: ";
-      cout << sc.nombreSucursal;
+    for (int i = 0; i < sucursalesDisp; ++i) {
+      if (sc[i].codigoSucursal == codigo) {
+        cout << endl << "Nombre de sucursal: ";
+        cout << sc[i].nombreSucursal;
 
-      cout << endl << "Ubicacion: ";
+        cout << endl << "Ubicacion: ";
 
-      for (int i = 0; i < 4; ++i) {
-        if (i == 3) {
-          cout << sc.direccionSucursal[i] << endl;
+        for (int j = 0; j < 4; ++j) {
+          if (j == 3) {
+            cout << sc[i].direccionSucursal[j] << endl;
+          }
+          else {
+            cout << " " << sc[i].direccionSucursal[j] << ", ";
+          }
         }
-        else {
-          cout << " " << sc.direccionSucursal[i] << ", ";
+
+        cout << "Telefonos: " << endl;
+        for (int j = 0; j < 3; ++j) {
+          cout << "  " << (j + 1) << ".- " << sc[i].telefonosSucursal[j] << endl;
         }
+        cout << endl;
       }
 
-      cout << "Telefonos: " << endl;
-      for (int i = 0; i < 3; ++i) {
-        cout << "  " << (i + 1) << ".- " << sc.telefonosSucursal[i] << endl;
+      if (i == (sucursalesDisp - 1)) {
+        cout << "Sucursal inexistente." << endl;
       }
-      cout << endl;
-    }
-    else {
-      cout << "Sucursal inexistente" << endl << endl;
+
+      else {
+        continue;
+      }
     }
 
     cout << "Quiere buscar otra sucursal?" << endl;
@@ -175,15 +197,15 @@ int sucursales::menu()
 
     switch (eleccion) {
       case 1:
-        sc.capturar();
+        sucursales::capturar();
         cout << endl;
         break;
       case 2:
-        sc.mostrar();
+        sucursales::mostrar();
         cout << endl;
         break;
       case 3:
-        sc.buscar();
+        sucursales::buscar();
         cout << endl;
         break;
       case 4:
