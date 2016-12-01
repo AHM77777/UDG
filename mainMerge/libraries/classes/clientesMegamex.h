@@ -10,7 +10,7 @@ int clientesDisp = 0;
 /**
  * Declaracion de la clase principal.
  */
-class cliente
+class clientes
 {
   public :
     // Variables publicas de la clase servicio.
@@ -18,74 +18,90 @@ class cliente
     int telefonoCliente, numeroCliente;
 
     // Metodos publicos de la clase servicio.
-    void capturar();
-    void mostrar();
-    void buscar();
-    int menu();
-} cl;
+    static void capturar();
+    static void mostrar();
+    static void buscar();
+    static int menu();
+} cl[30];
 
 /**
- * Recopilamos los datos del cliente.
+ * Recopilamos datos de los clientes.
  */
-void cliente::capturar()
+void clientes::capturar()
 {
-  cout << "--INGRESE DATOS LOS DATOS DEL CLIENTE--" << endl << endl;
+  int amountToRegister = 0;
 
-  // Limpiamos buffer de cualquier caracter indeseado.
-  cin.ignore(1, '\n');
+  if ((30 - clientesDisp) > 0) {
+    cout << "Inserte el numero de clientes que desea capturar (Maximo " << (30 - sucursalesDisp) << "): ";
+    cin >> amountToRegister;
+    checkInputRange(amountToRegister, 1, (30 - clientesDisp));
 
-  cout << "Ingrese el/los nombre(s) y apellidos del cliente como se le indicara a continuacion" << endl;
+    for (int i = 0; i < amountToRegister; ++i) {
+      cout << "-- INGRESE LOS DATOS DEL CLIENTE " << (i + 1) << "--" << endl << endl;
 
-  for (int i = 0; i < 3; ++i) {
-    switch (i) {
-      case 0:
-        cout << "  Nombre(s): ";
-        break;
-      case 1:
-        cout << "  Apellido Paterno: ";
-        break;
-      case 2:
-        cout << "  Apellido Materno: ";
-        break;
+      // Limpiamos buffer de cualquier caracter indeseado.
+      cin.sync();
+
+      cout << "Ingrese el/los nombre(s) y apellidos del cliente como se le indicara a continuacion" << endl;
+
+      for (int j = 0; j < 3; ++j) {
+        switch (j) {
+          case 0:
+            cout << "  Nombre(s): ";
+            break;
+          case 1:
+            cout << "  Apellido Paterno: ";
+            break;
+          case 2:
+            cout << "  Apellido Materno: ";
+            break;
+        }
+
+        cin.sync(); // Limpiamos buffer de caracteres indeseados paea registrar nombres.
+        getline(cin, cl[i].nombreCliente[j]);
+      }
+
+      cout << endl << "Ingrese la direcccion del cliente como se le indique a continuacion" << endl;
+
+      for (int j = 0; j < 4; ++j) {
+        switch(j) {
+          case 0:
+            cout << "  Direccion (Calle, Numero, Colonia): ";
+            break;
+          case 1:
+            cout << "  Ciudad: ";
+            break;
+          case 2:
+            cout << "  Estado: ";
+            break;
+          case 3:
+            cout << "  Codigo Postal: ";
+            break;
+        }
+
+        // Limpiamos buffer para ingresar el string que introducira el usuario.
+        cin.sync();
+        getline(cin, cl[i].direccionCliente[j]);
+      }
+
+      cout << endl << "Ingrese el numero de telefono del cliente: ";
+      cin >> cl[i].telefonoCliente;
+
+      // @TODO: Check for valid email.
+      cout << endl << "Ingrese el correo electronico del cliente: ";
+      cin >> cl[i].correoECliente;
+
+      cout << endl << "Ingrese el numero identificador del cliente (Maximo 5 digitos): ";
+      cin >> cl[i].numeroCliente;
+      checkInputLength(cl[i].numeroCliente, 5);
+
+      ++clientesDisp;
+      }
     }
 
-    cin.sync(); // Limpiamos buffer de caracteres indeseados paea registrar nombres.
-    getline(cin, cl.nombreCliente[i]);
-  }
-
-  cout << endl << "Ingrese la direcccion del cliente como se le indique a continuacion" << endl;
-
-  for (int i = 0; i < 4; ++i) {
-    switch(i) {
-      case 0:
-        cout << "  Direccion (Calle, Numero, Colonia): ";
-        break;
-      case 1:
-        cout << "  Ciudad: ";
-        break;
-      case 2:
-        cout << "  Estado: ";
-        break;
-      case 3:
-        cout << "  Codigo Postal: ";
-        break;
+    else {
+      cout << "Imposible agregar mas clientes." << endl;
     }
-
-    // Limpiamos buffer para ingresar el string que introducira el usuario.
-    cin.sync();
-    getline(cin, cl.direccionCliente[i]);
-  }
-
-  cout << endl << "Ingrese el numero de telefono del cliente: ";
-  cin >> cl.telefonoCliente;
-
-  // @TODO: Check for valid email.
-  cout << endl << "Ingrese el correo electronico del cliente: ";
-  cin >> cl.correoECliente;
-
-  cout << endl << "Ingrese el numero identificador del cliente (Maximo 5 digitos): ";
-  cin >> cl.numeroCliente;
-  checkInputLength(cl.numeroCliente, 5);
 
   cout << endl;
 }
@@ -93,35 +109,39 @@ void cliente::capturar()
 /**
  * Imprimimos los datos de los clientes registradis.
  */
-void cliente::mostrar()
+void clientes::mostrar()
 {
-  cout << "--DATOS DEL CLIENTE--" << endl;
+  for (int i = 0; i < clientesDisp; ++i) {
+    cout << "--DATOS DEL CLIENTE " << (i + 1) << "--" << endl;
 
-  cout << "Nombre: ";
+    cout << "Nombre: ";
 
-  for (int i = 0; i < 3; ++i) {
-    cout << cl.nombreCliente[i] << " ";
+    for (int j = 0; j < 3; ++j) {
+      cout << cl[i].nombreCliente[j] << " ";
+    }
+
+    cout << endl;
+
+    cout << "Direccion: ";
+
+    for (int j = 0; j < 4; ++j) {
+      if (j == 3) {
+        cout << cl[i].direccionCliente[j] << endl;
+      }
+      else {
+        cout << cl[i].direccionCliente[j] << ", ";
+      }
+    }
+
+    cout << "Telefono: " << cl[i].telefonoCliente << endl;
+    cout << "Correo Electronico: " << cl[i].correoECliente << endl;
+    cout << "Numero de cliente: " << cl[i].numeroCliente << endl << endl;
   }
 
   cout << endl;
-
-  cout << "Direccion: ";
-
-  for (int i = 0; i < 4; ++i) {
-    if (i == 3) {
-      cout << cl.direccionCliente[i] << endl;
-    }
-    else {
-      cout << cl.direccionCliente[i] << ", ";
-    }
-  }
-
-  cout << "Telefono: " << cl.telefonoCliente << endl;
-  cout << "Correo Electronico: " << cl.correoECliente << endl;
-  cout << "Numero de cliente: " << cl.numeroCliente << endl;
 }
 
-void cliente::buscar()
+void clientes::buscar()
 {
   int codigo;
 
@@ -131,19 +151,28 @@ void cliente::buscar()
     checkInputLength(codigo, 5);
     cout << endl;
 
-    if (codigo == cl.numeroCliente) {
-      cout << "Nombre de cliente: ";
+    for (int i = 0; i < clientesDisp; ++i) {
+      if (cl[i].numeroCliente == codigo) {
+        cout << "Nombre de cliente: ";
 
-      for (int i = 0; i < 3; ++i) {
-        cout << cl.nombreCliente[i] << " ";
+        for (int j = 0; j < 3; ++j) {
+          cout << cl[i].nombreCliente[j] << " ";
+        }
+
+        cout << endl;
+
+        cout << "Telefono: " << cl[i].telefonoCliente << endl;
+        cout << "Correo Electronico: " << cl[i].correoECliente << endl;
+        break;
       }
-      cout << endl;
 
-      cout << "Telefono: " << cl.telefonoCliente << endl;
-      cout << "Correo Electronico: " << cl.correoECliente << endl;
-    }
-    else {
-      cout << "Cliente inexistente." << endl << endl;
+      if (i == (clientesDisp - 1)) {
+        cout << "Cliente inexistente." << endl;
+      }
+
+      else {
+        continue;
+      }
     }
 
     cout << "Quiere buscar otro cliente?" << endl;
@@ -156,13 +185,13 @@ void cliente::buscar()
   }
 }
 
-int cliente::menu()
+int clientes::menu()
 {
   do {
     cout << "Que deseas hacer?" << endl;
-    cout << "  1.- Capturar cliente." << endl;
-    cout << "  2.- Ver cliente." << endl;
-    cout << "  3.- Buscar cliente." << endl;
+    cout << "  1.- Capturar un cliente." << endl;
+    cout << "  2.- Ver todos los clientes." << endl;
+    cout << "  3.- Buscar clientes." << endl;
     cout << "  4.- Regresar a menu principal." << endl;
 
     cout << "Eleccion: ";
@@ -170,19 +199,19 @@ int cliente::menu()
     cin >> eleccion;
     checkInputRange(eleccion, 1, 4);
 
-    cout <<endl;
+    cout << endl;
 
     switch (eleccion) {
       case 1:
-        cl.capturar();
+        clientes::capturar();
         cout << endl;
         break;
       case 2:
-        cl.mostrar();
+        clientes::mostrar();
         cout << endl;
         break;
       case 3:
-        cl.buscar();
+        clientes::buscar();
         cout << endl;
         break;
       case 4:
