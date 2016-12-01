@@ -47,6 +47,9 @@ class empleados
       return nombreS;
     };
 
+    /**
+     * Funcion para revisar si sucursal introducida es valida.
+     */
     bool sucursalValida(int sucursal)
     {
       bool sucursalValida = false;
@@ -61,11 +64,6 @@ class empleados
 } ep[10];
 
 /**
- * Funcion para revisar si sucursal introducida es valida.
- */
-
-
-/**
  * Recopilamos los datos del empleado.
  */
 void empleados::capturar()
@@ -74,10 +72,11 @@ void empleados::capturar()
 
   if (sucursalesDisp == 0) {
     cout << "Imposible registrar un empleado sin sucursales abiertas" << endl;
+    return;
   }
 
   if ((10 - empleadosDisp) > 0) {
-    cout << "Inserte el numero de empleados que desea capturar (Maximo " << (10 - sucursalesDisp) << "): ";
+    cout << "Inserte el numero de empleados que desea capturar (Maximo " << (10 - empleadosDisp) << "): ";
     cin >> amountToRegister;
     checkInputRange(amountToRegister, 1, (10 - empleadosDisp));
 
@@ -256,6 +255,7 @@ void empleados::buscar()
         }
 
         cout << endl;
+        break;
       }
 
       if (i == (empleadosDisp - 1)) {
