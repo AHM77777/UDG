@@ -33,14 +33,11 @@ void servicios::capturar()
   int amountToRegister = 0;
 
   if ((10 - serviciosDisp) > 0) {
-    cout << "10 - amountToRegister es " << (10 - amountToRegister) << endl;
     cout << "Inserte el numero de servicios que desea capturar (Maximo " << (10 - serviciosDisp) << "): ";
     cin >> amountToRegister;
     checkInputRange(amountToRegister, 1, (10 - serviciosDisp));
 
     for (int i = 0; i < amountToRegister; ++i) {
-      cout << "Aqui i vale " << i << endl;
-      cout << "Aqui amountToRegister vale " << amountToRegister << endl;
       cout << "-- INGRESE LOS DATOS DEL SERVICIO " << (i + 1) << " --" << endl;
 
       // Limpiamos buffer de cualquier caracter indeseado.
@@ -106,8 +103,6 @@ void servicios::capturar()
       getline(cin, sv[i].descripcionServicio);
 
       ++serviciosDisp;
-
-      pause();
     }
   }
 
