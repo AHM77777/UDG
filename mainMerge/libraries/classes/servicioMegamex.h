@@ -198,8 +198,8 @@ int servicios::menu()
   do {
     cout << "Que deseas hacer?" << endl;
     cout << "  1.- Capturar servicio." << endl;
-    cout << "  2.- Ver servicios." << endl;
-    cout << "  3.- Buscar servicio." << endl;
+    cout << "  2.- Ver todos los servicios." << endl;
+    cout << "  3.- Buscar un servicio." << endl;
     cout << "  4.- Regresar a menu principal." << endl;
 
     cout << "Eleccion: ";
