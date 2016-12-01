@@ -277,6 +277,147 @@ void empleados::buscar()
   }
 }
 
+void empleados::modificar()
+{
+  int codigo;
+
+  while (fin == 1) {
+    cout << "Ingrese el codigo del empleado que desea modificar: ";
+    cin >> codigo;
+    checkInputLength(codigo, 5);
+    cout << endl;
+
+    for (int i = 0; i < empleadosDisp; ++i) {
+      if (ep[i].codigoEmpleado == codigo) {
+
+        while (eleccion == 1) {
+          cout << "Nombre del empleado: ";
+          for (int j = 0; j < 3; ++j) {
+            cout << ep[i].nombreEmpleado[j] << " ";
+          }
+
+          cout << endl;
+
+          cout << "Sucursal donde laboral el empleado (codigo): ";
+          cout << ep[i].sucursalEmpleado << endl;
+
+          cout << "Codigo del empleado: ";
+          cout << ep[i].codigoEmpleado << endl;
+
+          cout << "Puesto del empleado: ";
+          switch (ep[i].puestoEmpleado) {
+            case 1:
+              cout << "Ventas";
+              break;
+            case 2:
+              cout << "Administracion";
+              break;
+            case 3:
+              cout << "IT";
+              break;
+            case 4:
+              cout << "Tecnicos";
+              break;
+            case 5:
+              cout << "Operadoras";
+              break;
+            case 6:
+              cout << "Customer-Care";
+              break;
+            case 7:
+              cout << "Contratistas";
+              break;
+          }
+
+          cout << endl << "Que deseas modificar?" << endl;
+          cout << "  1.- Nombre." << endl;
+          cout << "  2.- Sucursal." << endl;
+          cout << "  3.- Codigo." << endl;
+          cout << "  4.- Puesto." << endl;
+          cout << "Eleccion: ";
+          cin >> eleccion;
+          checkInputRange(eleccion, 1, 4);
+          cout << endl;
+
+          switch (eleccion) {
+            case 1:
+              cout << "Ingrese el su(s) nombre(s) y apellidos como se le indicara a continuacion: " << endl;
+
+                for (int j = 0; j < 3; ++j) {
+                  switch (j) {
+                    case 0:
+                      cout << "  Nombre(s): ";
+                      break;
+                    case 1:
+                      cout << "  Apellido Paterno: ";
+                      break;
+                    case 2:
+                      cout << "  Apellido Materno: ";
+                      break;
+                  }
+
+                  cin.sync(); // Limpiamos buffer de caracteres indeseados paea registrar nombres.
+                  getline(cin, ep[i].nombreEmpleado[j]);
+              }
+
+              cout << endl;
+              break;
+            case 2:
+              cout << "Nueva sucursal: ";
+              cin >> ep[i].sucursalEmpleado;
+              cout << endl;
+              break;
+            case 3:
+              cout << "Nuevo codigo: ";
+              cin >> ep[i].codigoEmpleado;
+              cout << endl;
+              break;
+            case 4:
+              cout << "Ingrese su puesto en base a las siguientes opciones:" << endl;
+              cout << "  1.- Ventas." << endl;
+              cout << "  2.- Administracion." << endl;
+              cout << "  3.- IT." << endl;
+              cout << "  4.- Tecnicos." << endl;
+              cout << "  5.- Operadoras." << endl;
+              cout << "  6.- Customer-Care" << endl;
+              cout << "  7.- Contratista" << endl;
+
+              cout << "Nuevo puesto: ";
+              cin >> ep[i].puestoEmpleado;
+              cout << endl;
+              break;
+          }
+
+          cout << "Desea modificar algo mas?" << endl;
+          cout << "  1.- Si." << endl;
+          cout << "  2.- No." << endl;
+          cout << "Eleccion: ";
+          cin >> eleccion;
+          cout << endl;
+        }
+
+        break;
+      }
+
+      if (i == (empleadosDisp - 1)) {
+        cout << "Empleado inexistente." << endl << endl;
+      }
+
+      else {
+        continue;
+      }
+    }
+
+    cout << "Quieres modificar otro empleado?" << endl;
+    cout << "  1.- Si." << endl;
+    cout << "  2.- No." << endl;
+    cout << "Eleccion: ";
+    cin >> fin;
+    checkInputRange(fin, 1, 2);
+    cout << endl;
+  }
+}
+
 int empleados::menu()
 {
   do {
@@ -284,7 +425,8 @@ int empleados::menu()
     cout << "  1.- Capturar empleados." << endl;
     cout << "  2.- Ver todos los empleados." << endl;
     cout << "  3.- Buscar empleados." << endl;
-    cout << "  4.- Regresar a menu principal." << endl;
+    cout << "  4.- Modificar empleados." << endl;
+    cout << "  5.- Regresar a menu principal." << endl;
 
     cout << "Eleccion: ";
     cin >> eleccion;
@@ -305,6 +447,10 @@ int empleados::menu()
         cout << endl;
         break;
       case 4:
+        empleados::modificar();
+        cout << endl;
+        break;
+      case 5:
         return 0;
     }
 

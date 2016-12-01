@@ -22,6 +22,7 @@ class productos
     static void capturar();
     static void mostrar();
     static void buscar();
+    static void modificar();
     static int menu();
 };
 
@@ -38,14 +39,20 @@ class productosElectronica : public productos
  */
 void productos::capturar()
 {
-  int opAnt, amountToRegister = 0, contador = 0;
+  int opAnt, tipo, amountToRegister = 0, contador = 0;
 
   if ((30 - productosDisp) > 0) {
+    cout << "Porfavor, especifique el tipo de producto que desea registrar de las opciones disponibles" << endl;
+    cout << "  1.- Electronica." << endl;
+    cin >> tipo;
+    checkInputRange(tipo, 1, 1);
+
     cout << "Inserte el numero de productos que desea capturar (Maximo " << (30 - productosDisp) << "): ";
     cin >> amountToRegister;
     checkInputRange(amountToRegister, 1, (30 - productosDisp));
 
     for (int i = 0; i < amountToRegister; ++i) {
+      pd[i].categoriaProducto = tipo;
       cout << "--INGRESE LOS DATOS DEL PRODUCTO A REGISTRAR--" << endl;
 
       // Limpiamos buffer de cualquier caracter indeseado.
@@ -137,6 +144,93 @@ void productos::buscar()
   }
 }
 
+void productos::modificar()
+{
+  int codigo;
+
+  while (fin == 1) {
+    cout << "Ingrese el codigo del producto que desea modificar: ";
+    cin >> codigo;
+    checkInputLength(codigo, 5);
+    cout << endl;
+
+    for (int i = 0; i < productosDisp; ++i) {
+      if (pd[i].codigoProducto == codigo) {
+        while (eleccion == 1) {
+          cout << "Nombre: ";
+          cout << pd[i].nombreProducto << endl;
+
+          cout << "En existencia: " << pd[i].cantidadProducto << endl;
+
+          cout << "Codigo: " << pd[i].codigoProducto << endl;
+
+          cout << "Costo: " << pd[i].costoProducto << endl;
+
+          cout << endl << "Que deseas modificar?" << endl;
+          cout << "  1.- Nombre." << endl;
+          cout << "  2.- Cantidad." << endl;
+          cout << "  3.- Codigo." << endl;
+          cout << "  4.- Costo." << endl;
+          cout << "Eleccion: ";
+          cin >> eleccion;
+          checkInputRange(eleccion, 1, 4);
+          cout << endl;
+
+          switch (eleccion) {
+            case 1:
+              cout << "Nuevo nombre: ";
+              cin.sync();
+              getline(cin, pd[i].nombreProducto);
+              cout << endl;
+              break;
+            case 2:
+              cout << "Nueva cantidad: ";
+              cin >> pd[i].cantidadProducto;
+              cout << endl;
+              break;
+            case 3:
+              cout << "Nuevo codigo: ";
+              cin >> pd[i].codigoProducto;
+              checkInputLength(pd[i].codigoProducto, 5);
+              cout << endl;
+              break;
+            case 4:
+              cout << "Nuevo costo: ";
+              cin >> pd[i].costoProducto;
+              cout << endl;
+              break;
+          }
+
+          cout << "Desea modificar algo mas?" << endl;
+          cout << "  1.- Si." << endl;
+          cout << "  2.- No." << endl;
+          cout << "Eleccion: ";
+          cin >> eleccion;
+          cout << endl;
+        }
+
+        break;
+      }
+
+      if (i == (clientesDisp - 1)) {
+        cout << "Contrato inexistente." << endl << endl;
+      }
+
+      else {
+        continue;
+      }
+    }
+
+    cout << "Quieres modificar otra sucursal?" << endl;
+    cout << "  1.- Si." << endl;
+    cout << "  2.- No." << endl;
+    cout << "Eleccion: ";
+    cin >> fin;
+    checkInputRange(fin, 1, 2);
+    cout << endl;
+  }
+}
+
 int productos::menu()
 {
   do {
@@ -144,29 +238,34 @@ int productos::menu()
     cout << "  1.- Capturar un producto." << endl;
     cout << "  2.- Ver todos los productos." << endl;
     cout << "  3.- Buscar productos." << endl;
-    cout << "  4.- Regresar a menu principal." << endl;
+    cout << "  4.- Modificar productos." << endl;
+    cout << "  5.- Regresar a menu principal." << endl;
 
     cout << "Eleccion: ";
 
     cin >> eleccion;
-    checkInputRange(eleccion, 1, 4);
+    checkInputRange(eleccion, 1, 5);
 
     cout <<endl;
 
     switch (eleccion) {
       case 1:
-        contratos::capturar();
+        productos::capturar();
         cout << endl;
         break;
       case 2:
-        contratos::mostrar();
+        productos::mostrar();
         cout << endl;
         break;
       case 3:
-        contratos::buscar();
+        productos::buscar();
         cout << endl;
         break;
       case 4:
+        productos::modificar();
+        cout << endl;
+        break;
+      case 5:
         return 0;
     }
 

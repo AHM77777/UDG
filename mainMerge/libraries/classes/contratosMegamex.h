@@ -21,6 +21,7 @@ class contratos
     static void capturar();
     static void mostrar();
     static void buscar();
+    static void modificar();
     static int menu();
 
     string servicioServido()
@@ -361,6 +362,147 @@ void contratos::buscar()
   }
 }
 
+void contratos::modificar()
+{
+  int codigo;
+
+  while (fin == 1) {
+    cout << "Ingrese el codigo del contrato que desea modificar: ";
+    cin >> codigo;
+    checkInputLength(codigo, 5);
+    cout << endl;
+
+    for (int i = 0; i < contratosDisp; ++i) {
+      if (ct[i].numeroContrato == codigo) {
+
+        while (eleccion == 1) {
+          cout << "Servicio (codigo): ";
+          cout << ct[i].servicioContrato << endl;
+
+          cout << "Cliente (codigo): " << ct[i].clienteContrato << endl;
+
+          cout << "Contratista (codigo): " << ct[i].contratistaContrato << endl;
+
+          cout << "Fecha del contrato: ";
+          for (int j = 0; j < 3; ++j) {
+            cout << ct[i].fechaContrato[j];
+
+            if (j < 2) {
+              cout << "/";
+            }
+          }
+
+          cout << endl;
+
+          cout << "Numero de contrato: " << ct[i].numeroContrato << endl;
+
+          cout << endl << "Que deseas modificar?" << endl;
+          cout << "  1.- Servicio." << endl;
+          cout << "  2.- Cliente." << endl;
+          cout << "  3.- Contratista." << endl;
+          cout << "  4.- Fecha del contrato." << endl;
+          cout << "  5.- Numero de contrato." << endl;
+          cout << "Eleccion: ";
+          cin >> eleccion;
+          checkInputRange(eleccion, 1, 5);
+          cout << endl;
+
+          switch (eleccion) {
+            case 1:
+              cout << "Nuevo servicio: ";
+              cin >> ct[i].servicioContrato;
+              checkInputLength(ct[i].servicioContrato, 5);
+              cout << endl;
+              break;
+            case 2:
+              cout << "Nuevo cliente: ";
+              cin >> ct[i].clienteContrato;
+              checkInputLength(ct[i].clienteContrato, 5);
+              cout << endl;
+              break;
+            case 3:
+              cout << "Nuevo contratista: ";
+              cin >> ct[i].contratistaContrato;
+              checkInputLength(ct[i].contratistaContrato, 5);
+              cout << endl;
+              break;
+            case 4:
+              cout << "Ingrese la fecha en que el contrato se efectuo como se le indica a continuacion" << endl;
+              for (int j = 0; j < 3; ++j) {
+                switch (j) {
+                  case 0:
+                    cout << "  Mes: ";
+                    cin >> ct[i].fechaContrato[j];
+                    while (ct[i].fechaContrato[j] > 12 || ct[i].fechaContrato[j] < 1) {
+                      cout << endl << "  Mes inexistente" << endl;
+                      cout << "  Mes: ";
+                      cin >> ct[i].fechaContrato[j];
+                      cout << endl;
+                    }
+                    break;
+                  case 1:
+                    cout << "  Dia: ";
+                    cin >> ct[i].fechaContrato[j];
+                    while (ct[i].fechaContrato[j] > 31 || ct[i].fechaContrato[j] < 0) {
+                      cout << endl << "  Dia inexistente" << endl;
+                      cout << "  Dia: ";
+                      cin >> ct[i].fechaContrato[j];
+                      cout << endl;
+                    }
+                    break;
+                  case 2:
+                    cout << "  A\xA4o: ";
+                    cin >> ct[i].fechaContrato[j];
+                    while (ct[i].fechaContrato[j] > 2016 || ct[i].fechaContrato[j] < 1910) {
+                      cout << endl << "  A\xA4o no disponible" << endl;
+                      cout << "  A\xA4o: ";
+                      cin >> ct[i].fechaContrato[j];
+                      cout << endl;
+                    }
+                    break;
+                }
+              }
+              ct[i].arreglarFechas(ct[i].fechaContrato);
+              cout << endl;
+              break;
+            case 5:
+              cout << "Nuevo numero de contrato: ";
+              cin >> ct[i].numeroContrato;
+              checkInputLength(ct[i].numeroContrato, 5);
+              cout << endl;
+              break;
+          }
+
+          cout << "Desea modificar algo mas?" << endl;
+          cout << "  1.- Si." << endl;
+          cout << "  2.- No." << endl;
+          cout << "Eleccion: ";
+          cin >> eleccion;
+          cout << endl;
+        }
+
+        break;
+      }
+
+      if (i == (clientesDisp - 1)) {
+        cout << "Contrato inexistente." << endl << endl;
+      }
+
+      else {
+        continue;
+      }
+    }
+
+    cout << "Quieres modificar otra sucursal?" << endl;
+    cout << "  1.- Si." << endl;
+    cout << "  2.- No." << endl;
+    cout << "Eleccion: ";
+    cin >> fin;
+    checkInputRange(fin, 1, 2);
+    cout << endl;
+  }
+}
+
 int contratos::menu()
 {
   do {
@@ -368,12 +510,13 @@ int contratos::menu()
     cout << "  1.- Capturar contrato." << endl;
     cout << "  2.- Ver contrato." << endl;
     cout << "  3.- Buscar contrato." << endl;
-    cout << "  4.- Regresar a menu principal." << endl;
+    cout << "  4.- Modificar contrato" << endl;
+    cout << "  5.- Regresar a menu principal." << endl;
 
     cout << "Eleccion: ";
 
     cin >> eleccion;
-    checkInputRange(eleccion, 1, 4);
+    checkInputRange(eleccion, 1, 5);
 
     cout <<endl;
 
@@ -391,6 +534,10 @@ int contratos::menu()
         cout << endl;
         break;
       case 4:
+        contratos::modificar();
+        cout << endl;
+        break;
+      case 5:
         return 0;
     }
 

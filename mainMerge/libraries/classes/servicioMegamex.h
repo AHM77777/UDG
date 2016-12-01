@@ -16,12 +16,13 @@ class servicios
     // Variables publicas de la clase servicio.
     string tituloServicio, descripcionServicio;
     int tipoServicio, codigoServicio;
-    float costoServicio, comisionEmpleado;
+    float costoServicio, comisionServicio;
 
     // Metodos publicos de la clase servicio.
     static void capturar();
     static void mostrar();
     static void buscar();
+    static void modificar();
     static int menu();
 } sv[10];
 
@@ -94,7 +95,7 @@ void servicios::capturar()
 
       cout << endl << "Ingrese la comision del empleado por el servicio:" << endl;
       cout << "  $ ";
-      cin >> sv[i].comisionEmpleado;
+      cin >> sv[i].comisionServicio;;
 
       // Limpiamos buffer para poder registrar la descripcion del servicio.
       cin.ignore(1, '\n');
@@ -146,7 +147,7 @@ void servicios::mostrar()
 
     cout << "Codigo: " << sv[i].codigoServicio << endl;
     cout << "Costo: $" << sv[i].costoServicio << endl;
-    cout << "Comision de empleado: $" << sv[i].comisionEmpleado << endl;
+    cout << "Comision de empleado: $" << sv[i].comisionServicio << endl;
     cout << "Descripcion: " << sv[i].descripcionServicio << endl << endl;
   }
 }
@@ -171,7 +172,7 @@ void servicios::buscar()
         cout << sv[i].costoServicio << endl ;
 
         cout << "Comision a empleado: ";
-        cout << sv[i].comisionEmpleado << endl << endl;
+        cout << sv[i].comisionServicio << endl << endl;
 
         break;
       }
@@ -195,19 +196,134 @@ void servicios::buscar()
   }
 }
 
+void servicios::modificar()
+{
+  int codigo;
+
+  while (fin == 1) {
+    cout << "Ingrese el codigo del servicio que desea modificar: ";
+    cin >> codigo;
+    checkInputLength(codigo, 5);
+    cout << endl;
+
+    for (int i = 0; i < serviciosDisp; ++i) {
+      if (sv[i].codigoServicio == codigo) {
+
+        while (eleccion == 1) {
+          cout << "Titulo de servicio: ";
+          cout << sv[i].tituloServicio << endl;
+
+          cout << "Tipo de servicio: ";
+          cout << sv[i].tipoServicio << endl;
+
+          cout << "Costo de servicio: ";
+          cout << sv[i].costoServicio << endl;
+
+          cout << "Codigo de servicio: ";
+          cout << sv[i].codigoServicio << endl;
+
+          cout << "Comision a empleado: ";
+          cout << sv[i].comisionServicio << endl;
+
+          cout << "Descripcion de servicio: ";
+          cout << sv[i].descripcionServicio << endl;
+
+          cout << endl << "Que deseas modificar?" << endl;
+          cout << "  1.- Titulo." << endl;
+          cout << "  2.- Tipo." << endl;
+          cout << "  3.- Costo." << endl;
+          cout << "  4.- Codigo." << endl;
+          cout << "  5.- Comision." << endl;
+          cout << "  6.- Descripcion." << endl;
+          cout << "Eleccion: ";
+          cin >> eleccion;
+          checkInputRange(eleccion, 1, 6);
+          cout << endl;
+
+          switch (eleccion) {
+            case 1:
+              cout << "Nuevo titulo: ";
+              cin >> sv[i].tituloServicio;
+              cout << endl;
+              break;
+            case 2:
+              cout << endl << "Especifique el digito del tipo de servicio a ofrecer." << endl;
+              cout << "  1.- Telefonia Digital." << endl;
+              cout << "  2.- Television Digital." << endl;
+              cout << "  3.- Television Satelital." << endl;
+              cout << "  4.- Internet" << endl;
+              cout << "  5.- Mixto (Especificar en descripcion del servicio)."  << endl;
+
+              cout << "Nuevo tipo: ";
+              cin >> sv[i].tipoServicio;
+              cout << endl;
+              break;
+            case 3:
+              cout << "Nuevo costo: ";
+              cin >> sv[i].costoServicio;
+              cout << endl;
+              break;
+            case 4:
+              cout << "Nuevo codigo: ";
+              cin >> sv[i].codigoServicio;
+              cout << endl;
+              break;
+            case 5:
+              cout << "Nueva comision: ";
+              cin >> sv[i].comisionServicio;
+              cout << endl;
+              break;
+            case 6:
+              cout << "Nueva descripcion: ";
+              cin >> sv[i].tituloServicio;
+              cout << endl;
+              break;
+          }
+
+          cout << "Desea modificar algo mas?" << endl;
+          cout << "  1.- Si." << endl;
+          cout << "  2.- No." << endl;
+          cout << "Eleccion: ";
+          cin >> eleccion;
+          cout << endl;
+        }
+
+        break;
+      }
+
+      if (i == (serviciosDisp - 1)) {
+        cout << "Servicio inexistente." << endl << endl;
+      }
+
+      else {
+        continue;
+      }
+    }
+
+    cout << "Quieres modificar otro servicio?" << endl;
+    cout << "  1.- Si." << endl;
+    cout << "  2.- No." << endl;
+    cout << "Eleccion: ";
+    cin >> fin;
+    checkInputRange(fin, 1, 2);
+    cout << endl;
+  }
+}
+
 int servicios::menu()
 {
   do {
     cout << "Que deseas hacer?" << endl;
     cout << "  1.- Capturar servicio." << endl;
     cout << "  2.- Ver todos los servicios." << endl;
-    cout << "  3.- Buscar un servicio." << endl;
-    cout << "  4.- Regresar a menu principal." << endl;
+    cout << "  3.- Buscar servicios." << endl;
+    cout << "  4.- Modificar servicios." << endl;
+    cout << "  5.- Regresar a menu principal." << endl;
 
     cout << "Eleccion: ";
 
     cin >> eleccion;
-    checkInputRange(eleccion, 1, 4);
+    checkInputRange(eleccion, 1, 5);
 
     cout <<endl;
 
@@ -225,6 +341,10 @@ int servicios::menu()
         cout << endl;
         break;
       case 4:
+        servicios::modificar();
+        cout << endl;
+        break;
+      case 5:
         return 0;
     }
 

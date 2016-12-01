@@ -21,6 +21,7 @@ class sucursales
     static void capturar();
     static void mostrar();
     static void buscar();
+    static void modificar();
     static int menu();
 } sc[10];
 
@@ -187,18 +188,151 @@ void sucursales::buscar()
   }
 }
 
+void sucursales::modificar()
+{
+  int codigo;
+
+  while (fin == 1) {
+    cout << "Ingrese el codigo de la sucursal que desea modificar: ";
+    cin >> codigo;
+    checkInputLength(codigo, 5);
+    cout << endl;
+
+    for (int i = 0; i < sucursalesDisp; ++i) {
+      if (sc[i].codigoSucursal == codigo) {
+
+        while (eleccion == 1) {
+          cout << "Nombre: ";
+          cout << sc[i].nombreSucursal << endl;
+
+          cout << "Direccion: ";
+          for (int j = 0; j < 4; ++j) {
+            if (j == 3) {
+              cout << sc[i].direccionSucursal[j] << endl;
+            }
+
+            else {
+              cout << sc[i].direccionSucursal[j] << ", ";
+            }
+          }
+
+          cout << endl;
+
+          cout << "Codigo: ";
+          cout << sc[i].codigoSucursal << endl;
+
+          cout << "Telefonos:" << endl;
+
+          for (int j = 0; j < 3; ++j) {
+            // @TODO: Format output of phone numbers to be formatted for the user.
+            cout << "  " << (j + 1) << ".- " << sc[i].telefonosSucursal[j] << endl;
+          }
+
+          cout << endl << "Que deseas modificar?" << endl;
+          cout << "  1.- Nombre." << endl;
+          cout << "  2.- Direccion." << endl;
+          cout << "  3.- Codigo." << endl;
+          cout << "  4.- Telefonos." << endl;
+          cout << "Eleccion: ";
+          cin >> eleccion;
+          checkInputRange(eleccion, 1, 4);
+          cout << endl;
+
+          switch (eleccion) {
+            case 1:
+              cout << "Nuevo nombre: ";
+              cin >> sc[i].nombreSucursal;
+              cout << endl;
+              break;
+            case 2:
+              cout << endl << "A continuacion se le pedira informacion referente a la direccion de"
+              << " la sucursal" << endl;
+
+              for (int j = 0; j < 4; ++j) {
+                switch(j) {
+                  case 0:
+                    cout << "  Direccion (Calle, Numero, Colonia): ";
+                    break;
+                  case 1:
+                    cout << "  Ciudad: ";
+                    break;
+                  case 2:
+                    cout << "  Estado: ";
+                    break;
+                  case 3:
+                    cout << "  Codigo Postal: ";
+                    break;
+                }
+
+                // Limpiamos buffer para ingresar el string que introducira el usuario.
+                cin.sync();
+                getline(cin, sc[i].direccionSucursal[j]);
+              }
+
+              cout << endl;
+              break;
+            case 3:
+              cout << "Nuevo codigo: ";
+              cin >> sc[i].codigoSucursal;
+              cout << endl;
+              break;
+            case 4:
+              cout << "A continuacion se le pedira que introduzca los tres numeros de"
+              << " telefono con los que su sucursal cuenta:" << endl;
+
+              // @TODO: Function to check if inserted number is valid.
+              for (int j = 0; j < 3; ++j) {
+                cout << "  Telefono " << (j + 1) << ": ";
+               cin >> sc[i].telefonosSucursal[j];
+              }
+
+              cout << endl;
+              break;
+          }
+
+          cout << "Desea modificar algo mas?" << endl;
+          cout << "  1.- Si." << endl;
+          cout << "  2.- No." << endl;
+          cout << "Eleccion: ";
+          cin >> eleccion;
+          cout << endl;
+        }
+
+        break;
+      }
+
+      if (i == (sucursalesDisp - 1)) {
+        cout << "Empleado inexistente." << endl << endl;
+      }
+
+      else {
+        continue;
+      }
+    }
+
+    cout << "Quieres modificar otra sucursal?" << endl;
+    cout << "  1.- Si." << endl;
+    cout << "  2.- No." << endl;
+    cout << "Eleccion: ";
+    cin >> fin;
+    checkInputRange(fin, 1, 2);
+    cout << endl;
+  }
+}
+
 int sucursales::menu()
 {
   do {
     cout << "Que deseas hacer?" << endl;
     cout << "  1.- Capturar sucursal." << endl;
-    cout << "  2.- Ver sucursales." << endl;
+    cout << "  2.- Ver todas las sucursales." << endl;
     cout << "  3.- Buscar sucursales." << endl;
-    cout << "  4.- Regresar a menu principal." << endl;
+    cout << "  4.- Modificar sucursales." << endl;
+    cout << "  5.- Regresar a menu principal." << endl;
 
     cout << "Eleccion: ";
     cin >> eleccion;
-    checkInputRange(eleccion, 1, 4);
+    checkInputRange(eleccion, 1, 5);
     cout << endl;
 
     switch (eleccion) {
@@ -215,6 +349,10 @@ int sucursales::menu()
         cout << endl;
         break;
       case 4:
+        sucursales::modificar();
+        cout << endl;
+        break;
+      case 5:
         return 0;
     }
 
