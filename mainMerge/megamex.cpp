@@ -25,11 +25,11 @@ int main()
 
     switch (eleccion) {
       case 1:
-        sv.menu();
+        servicios::menu();
         cout << endl;
         break;
       case 2:
-        sc.menu();
+        sucursales::menu();
         cout << endl;
         break;
       case 3:
