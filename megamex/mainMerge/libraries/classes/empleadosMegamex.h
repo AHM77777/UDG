@@ -1,5 +1,5 @@
 #ifndef __EMPLEADOSMEGAMEX_H_INCLUDED__
-#define __EMPLEADOSSMEGAMEX_H_INCLUDED__
+#define __EMPLEADOSMEGAMEX_H_INCLUDED__
 
 #include "../utilities/utileriasAHM.h"
 
