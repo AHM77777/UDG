@@ -28,7 +28,7 @@ class servicios
     bool validarServicio() {
       bool servicio = true;
 
-      for (int i = 0; i < servicioDisp; ++i) {
+      for (int i = 0; i < serviciosDisp; ++i) {
         if (codigoServicio == sv[i].codigoServicio) {
 	  servicio = false;
 	}
