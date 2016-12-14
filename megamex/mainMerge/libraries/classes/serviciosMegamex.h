@@ -1,5 +1,5 @@
-#ifndef __SERVICIOMEGAMEX_H_INCLUDED__
-#define __SERVICIOMEGAMEX_H_INCLUDED__
+#ifndef __SERVICIOSMEGAMEX_H_INCLUDED__
+#define __SERVICIOSMEGAMEX_H_INCLUDED__
 
 #include "../utilities/utileriasAHM.h"
 
@@ -24,6 +24,19 @@ class servicios
     static void buscar();
     static void modificar();
     static int menu();
+
+    bool validarServicio() {
+      bool servicio = true;
+
+      for (int i = 0; i < servicioDisp; ++i) {
+        if (codigoServicio == sv[i].codigoServicio) {
+	  servicio = false;
+	}
+      }
+
+      return servicio;
+    };
+      
 } sv[10];
 
 /**
@@ -49,10 +62,10 @@ void servicios::capturar()
 
       // Implementacion de ejemplos para nombramiento de titulo.
       if (sv[i].tituloServicio == "help") {
-        int i = 0;
+        int k = 0;
 
         while (sv[i].tituloServicio == "help") {
-          switch (i) {
+          switch (k) {
             case 0:
               cout << "  p. ej. Paquete Televisivo Basico 1." << endl;
               break;
@@ -61,15 +74,15 @@ void servicios::capturar()
              break;
             case 2:
              cout << "p. ej. Megapaquete Cable/Internet/Telefono." << endl;
-             i = -1;
+             k = -1;
              break;
           }
 
-          i++;
+          k++;
 
           cout << endl << "Titulo de servicio: ";
           getline(cin, sv[i].tituloServicio);
-       }
+        }
       }
 
       cout << endl << "Especifique el digito del tipo de servicio a ofrecer." << endl;
@@ -84,7 +97,7 @@ void servicios::capturar()
 
       cout << endl << "Ingrese el codigo de tu servicio (Asegurate de que el codigo"
       << " tenga un maximo de 5 digitos): ";
-      // @TODO: Revisar si codigo de servicio ingresado ya existe.
+      
       cin >> sv[i].codigoServicio;
       checkInputLength(sv[i].codigoServicio, 5);
 

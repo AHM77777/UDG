@@ -1,5 +1,5 @@
 #include "./libraries/utilities/utileriasAHM.h"
-#include "./libraries/classes/servicioMegamex.h"
+#include "./libraries/classes/serviciosMegamex.h"
 #include "./libraries/classes/sucursalesMegamex.h"
 #include "./libraries/classes/empleadosMegamex.h"
 #include "./libraries/classes/clientesMegamex.h"
