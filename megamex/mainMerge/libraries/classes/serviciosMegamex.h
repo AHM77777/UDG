@@ -101,7 +101,13 @@ void servicios::capturar()
       cin >> sv[i].codigoServicio;
       checkInputLength(sv[i].codigoServicio, 5);
 
-      // @TODO: Revisar que cantidad ingresada sea valida.
+      // Checamos que el codigo de servicio ingresado sea nuevo.
+      while (sv[i].validarServicio() == false) {
+        cout << "Codigo de servicio ya existente, porfavor ingreselo nuevamente: ";
+	cin >> sv[i].codigoServicio;
+	cout << endl;
+      }
+      
       cout << endl << "Ingrese el costo del servicio:" << endl;
       cout << "  $ ";
       cin >> sv[i].costoServicio;
